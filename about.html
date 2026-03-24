@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Stackly - Our Mission</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Custom CSS (Inherited Base + About Specific) -->
+    <style>
+        :root {
+            /* Ultra Premium Palette */
+            --bg-color: #000000; 
+            --surface: #0a0a0a;
+            --surface-elevated: #121212;
+            
+            --accent-primary: #ffffff; 
+            --accent-secondary: #3b82f6; 
+            --accent-glow: #8b5cf6; 
+            
+            --text-white: #ffffff;
+            --text-black: #000000;
+            --text-gray-300: #e4e4e7;
+            --text-gray-400: #a1a1aa;
+            --text-gray-500: #71717a;
+            
+            /* High-end Glassmorphism */
+            --glass-bg: rgba(255, 255, 255, 0.015);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-border-hover: rgba(255, 255, 255, 0.15);
+            
+            /* Nav Backgrounds */
+            --nav-bg: rgba(0, 0, 0, 0.5);
+            --mobile-menu-bg: rgba(0, 0, 0, 0.98);
+
+            /* Footer Brand Colors */
+            --brand-huge-color-1: rgba(255, 255, 255, 0.02);
+            --brand-huge-color-2: rgba(255, 255, 255, 0.08);
+
+            /* Fonts */
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --transition-speed: 0.5s; 
+        }
+
+        /* Light Theme Override */
+        :root[data-theme="light"] {
+            --bg-color: #ffffff; 
+            --surface: #f4f4f5;
+            --surface-elevated: #e4e4e7;
+            
+            --text-white: #000000;
+            --text-black: #ffffff;
+            --text-gray-300: #52525b;
+            --text-gray-400: #71717a;
+            --text-gray-500: #a1a1aa;
+            
+            --glass-bg: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-border-hover: rgba(0, 0, 0, 0.2);
+
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --mobile-menu-bg: rgba(255, 255, 255, 0.98);
+
+            /* Footer Brand Colors Light Mode */
+            --brand-huge-color-1: rgba(0, 0, 0, 0.03);
+            --brand-huge-color-2: rgba(0, 0, 0, 0.09);
+        }
+
+        /* Reset & Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.03), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.03), transparent 40%);
+        }
+
+        ::selection { background-color: var(--text-white); color: var(--text-black); }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { background: none; border: none; cursor: pointer; font-family: inherit; }
+        img { max-width: 100%; display: block; }
+
+        .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+        /* Custom Cursor */
+        #cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background-color: #ffffff; 
+            border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+            mix-blend-mode: difference;
+        }
+        #cursor.hovered { width: 40px; height: 40px; background-color: #ffffff; mix-blend-mode: difference; }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 50; padding: 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--nav-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--glass-border); transition: all var(--transition-speed);
+        }
+        .nav-logo {
+            font-size: 1.25rem; font-weight: 800; color: var(--text-white);
+            letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 12px;
+        }
+        .nav-logo-icon { color: var(--text-white); width: 24px; height: 24px; }
+        .nav-links {
+            display: none; gap: 48px; font-size: 0.8rem; font-weight: 500;
+            color: var(--text-gray-400); letter-spacing: 1px; text-transform: uppercase;
+        }
+        .nav-links a { transition: color var(--transition-speed); position: relative; }
+        .nav-links a:hover { color: var(--text-white); }
+        .nav-actions { display: flex; align-items: center; gap: 24px; }
+        
+        .btn-primary {
+            display: none; background: transparent; color: var(--text-white);
+            padding: 12px 28px; border: 1px solid var(--glass-border); border-radius: 99px;
+            font-weight: 500; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;
+            transition: all var(--transition-speed);
+        }
+        .btn-primary:hover { background-color: var(--text-white); color: var(--text-black); border-color: var(--text-white); }
+        .mobile-menu-btn { display: block; color: var(--text-white); z-index: 51; position: relative; }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            position: fixed; inset: 0; background: var(--mobile-menu-bg); backdrop-filter: blur(24px);
+            z-index: 40; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        .mobile-menu.active { transform: translateY(0); }
+        .mobile-nav {
+            display: flex; flex-direction: column; gap: 40px; text-align: center;
+            font-size: 1.5rem; font-weight: 400; letter-spacing: 4px; text-transform: uppercase;
+        }
+        .mobile-nav a { color: var(--text-gray-500); transition: color 0.4s; }
+        .mobile-nav a:hover { color: var(--text-white); }
+
+        /* Theme Toggle Switch */
+        .theme-switch { font-size: 14px; position: relative; display: inline-block; width: 3.5em; height: 2em; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .theme-toggle-slider { position: absolute; cursor: pointer; inset: 0; border: 2px solid var(--text-gray-400); border-radius: 50px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .theme-toggle-slider:before { position: absolute; content: ""; height: 1.4em; width: 1.4em; left: 0.15em; bottom: 0.15em; background-color: var(--text-white); border-radius: inherit; transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1); }
+        .theme-switch input:checked + .theme-toggle-slider { box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); border: 2px solid var(--text-white); background-color: var(--text-white); }
+        .theme-switch input:checked + .theme-toggle-slider:before { transform: translateX(1.5em); background-color: var(--text-black); }
+
+        /* General UI Elements */
+        .section-padding { padding: 80px 0; position: relative; }
+        .section-header { margin-bottom: 40px; text-align: center; position: relative; z-index: 10; }
+        .section-header.left { text-align: left; }
+        
+        .subtitle {
+            font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
+            color: var(--text-gray-400); margin-bottom: 24px; letter-spacing: 4px;
+            text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 16px;
+        }
+        .section-header.left .subtitle { justify-content: flex-start; }
+        .subtitle::before, .subtitle::after { content: ''; display: block; width: 40px; height: 1px; background-color: var(--glass-border-hover); }
+        .section-header.left .subtitle::after { display: none; }
+
+        .title-main { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; color: var(--text-white); }
+        
+        .btn-solid {
+            padding: 16px 36px; background-color: var(--text-white); color: var(--text-black);
+            font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px; border-radius: 99px;
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-solid:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15); }
+
+        /* Animations */
+        .reveal-up { opacity: 0; transform: translateY(40px); }
+
+        /* --- ABOUT PAGE SPECIFIC STYLES --- */
+
+        /* About Hero */
+        .about-hero {
+            position: relative; min-height: 60vh; display: flex; align-items: center; justify-content: center;
+            padding-top: 120px; overflow: hidden; text-align: center;
+        }
+        .about-hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+            z-index: 0; pointer-events: none;
+        }
+        .about-hero-content { position: relative; z-index: 10; max-width: 800px; }
+        .about-hero-title { font-size: 4rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 24px; line-height: 1.1; }
+        .about-hero-desc { font-size: 1.1rem; color: var(--text-gray-400); font-weight: 300; line-height: 1.8; }
+
+        /* Story Section */
+        .story-section { background: var(--surface); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); }
+        .story-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
+        .story-image { position: relative; border-radius: 4px; overflow: hidden; border: 1px solid var(--glass-border); aspect-ratio: 4/3; }
+        .story-image img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.6); transition: filter 0.8s ease; }
+        .story-image:hover img { filter: grayscale(0%) brightness(0.9); }
+        .story-content p { color: var(--text-gray-300); margin-bottom: 24px; font-weight: 300; line-height: 1.8; font-size: 1.05rem; }
+
+        /* Values Grid (Bento Style) */
+        .values-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 60px; }
+        .value-card { background: var(--surface); border: 1px solid var(--glass-border); padding: 40px 32px; border-radius: 4px; transition: all var(--transition-speed); }
+        .value-card:hover { background: var(--surface-elevated); border-color: var(--glass-border-hover); transform: translateY(-5px); }
+        .value-icon { margin-bottom: 24px; color: var(--text-white); width: 32px; height: 32px; }
+        .value-title { font-size: 1.5rem; font-weight: 600; color: var(--text-white); margin-bottom: 16px; letter-spacing: -0.5px; }
+        .value-desc { color: var(--text-gray-400); font-weight: 300; line-height: 1.7; font-size: 0.95rem; }
+
+        /* Team Section */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px; margin-top: 60px; }
+        .team-member { position: relative; border: 1px solid var(--glass-border); border-radius: 4px; background: var(--surface); overflow: hidden; transition: all var(--transition-speed); }
+        .team-member:hover { border-color: var(--glass-border-hover); transform: translateY(-8px); }
+        .team-img-wrap { width: 100%; aspect-ratio: 1/1; overflow: hidden; position: relative; }
+        .team-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1.05); }
+        .team-member:hover .team-img-wrap img { filter: grayscale(0%); transform: scale(1); }
+        .team-info { padding: 24px; border-top: 1px solid var(--glass-border); }
+        .team-role { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-gray-500); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; display: block;}
+        .team-name { font-size: 1.4rem; font-weight: 600; color: var(--text-white); }
+
+        /* Timeline Section */
+        .timeline-container { position: relative; max-width: 1000px; margin: 60px auto 0; padding: 0 20px; }
+        .timeline-container::before {
+            content: ''; position: absolute; top: 0; bottom: 0; left: 24px;
+            width: 2px; background: var(--glass-border-hover);
+        }
+        .timeline-item { position: relative; margin-bottom: 60px; padding-left: 60px; }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-dot {
+            position: absolute; left: 17px; top: 0; width: 16px; height: 16px; border-radius: 50%;
+            background: var(--bg-color); border: 2px solid var(--text-white);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); z-index: 2;
+        }
+        .timeline-content { background: var(--surface); border: 1px solid var(--glass-border); padding: 32px; border-radius: 4px; transition: all var(--transition-speed); }
+        .timeline-content:hover { border-color: var(--glass-border-hover); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .timeline-year { font-family: var(--font-mono); color: var(--accent-secondary); font-size: 1rem; font-weight: 500; margin-bottom: 12px; letter-spacing: 2px; display: inline-block; }
+        .timeline-title { font-size: 1.5rem; font-weight: 600; color: var(--text-white); margin-bottom: 16px; letter-spacing: -0.5px; }
+        .timeline-desc { color: var(--text-gray-400); font-weight: 300; line-height: 1.7; font-size: 0.95rem; }
+
+        /* Testimonials Section */
+        .testimonials-section { background: var(--surface); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); }
+        .testi-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 60px; }
+        .testi-card { background: var(--bg-color); border: 1px solid var(--glass-border); padding: 40px; border-radius: 4px; transition: all var(--transition-speed); display: flex; flex-direction: column; justify-content: space-between; }
+        .testi-card:hover { border-color: var(--glass-border-hover); transform: translateY(-5px); }
+        .quote-icon { width: 32px; height: 32px; color: var(--glass-border-hover); margin-bottom: 24px; }
+        .testi-quote { font-size: 1.1rem; font-weight: 300; line-height: 1.8; color: var(--text-gray-300); margin-bottom: 32px; flex-grow: 1; }
+        .testi-author { display: flex; align-items: center; gap: 16px; border-top: 1px solid var(--glass-border); padding-top: 24px; }
+        .testi-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; filter: grayscale(100%); }
+        .testi-info h4 { font-size: 1.1rem; font-weight: 600; color: var(--text-white); margin-bottom: 4px; }
+        .testi-info span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-gray-500); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* CTA Section */
+        .cta-section { padding: 120px 0; text-align: center; }
+
+        /* Footer Inherited Styles */
+        .footer { background-color: var(--bg-color); border-top: 1px solid var(--glass-border); padding-top: 80px; padding-bottom: 20px; position: relative; overflow: hidden; }
+        .footer::before { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80%; height: 500px; background: radial-gradient(ellipse at bottom, rgba(59, 130, 246, 0.05) 0%, transparent 60%); pointer-events: none; z-index: 0; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 60px; position: relative; z-index: 1;}
+        .footer-col-desc { color: var(--text-gray-400); line-height: 1.8; margin-bottom: 40px; font-size: 0.95rem; font-weight: 300; max-width: 320px;}
+        .social-links { display: flex; gap: 16px; }
+        .social-btn { width: 48px; height: 48px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-weight: 400; transition: all var(--transition-speed); font-size: 0.8rem; color: var(--text-gray-400); border-radius: 50%; }
+        .social-btn:hover { border-color: var(--text-white); color: var(--text-black); background: var(--text-white); }
+        .footer-title { font-family: var(--font-mono); color: var(--text-gray-500); font-weight: 500; margin-bottom: 32px; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;}
+        .footer-links li { margin-bottom: 20px; }
+        .footer-links a { color: var(--text-gray-300); transition: color var(--transition-speed); font-size: 0.95rem; font-weight: 300;}
+        .footer-links a:hover { color: var(--text-white); padding-left: 5px; }
+        .newsletter-input { width: 100%; background-color: transparent; border: none; border-bottom: 1px solid var(--glass-border); padding: 16px 0; color: var(--text-white); outline: none; transition: border-color 0.4s; font-size: 0.95rem; margin-bottom: 24px; border-radius: 0;}
+        .newsletter-input:focus { border-color: var(--text-white); }
+        .btn-subscribe { background-color: transparent; color: var(--text-white); font-weight: 500; padding: 0; border: none; border-bottom: 1px solid transparent; transition: all 0.4s; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;}
+        .btn-subscribe:hover { border-color: var(--text-white); gap: 12px;}
+        .footer-bottom { border-top: 1px solid var(--glass-border); padding-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 24px; color: var(--text-gray-500); font-size: 0.8rem; text-align: center; font-weight: 300; position: relative; z-index: 1;}
+        .footer-legal { display: flex; gap: 32px; }
+        .footer-legal a:hover { color: var(--text-white); }
+        .footer-brand-huge {
+            font-size: 18vw; font-weight: 900; line-height: 0.8; text-align: center; letter-spacing: -0.05em; pointer-events: none; user-select: none;
+            margin-bottom: -40px; margin-top: 40px; position: relative; z-index: 1;
+            background: linear-gradient(to right, var(--brand-huge-color-1) 20%, var(--brand-huge-color-2) 50%, var(--brand-huge-color-1) 80%);
+            background-size: 200% auto; color: transparent; -webkit-background-clip: text;
+        }
+
+        /* Media Queries */
+        @media (min-width: 768px) {
+            .section-padding { padding: 120px 0; }
+            .section-header { margin-bottom: 60px; }
+            .nav-links { display: flex; }
+            .btn-primary { display: inline-flex; }
+            .mobile-menu-btn { display: none; }
+            .title-main { font-size: 3.5rem; }
+            .about-hero-title { font-size: 5rem; }
+            .story-grid { grid-template-columns: 1fr 1fr; gap: 64px; }
+            .values-grid { grid-template-columns: repeat(2, 1fr); }
+            .testi-grid { grid-template-columns: repeat(2, 1fr); }
+            
+            /* Timeline Desktop */
+            .timeline-container::before { left: 50%; transform: translateX(-50%); }
+            .timeline-item { width: 50%; padding-left: 0; padding-right: 40px; margin-bottom: 40px; }
+            .timeline-item:nth-child(even) { margin-left: auto; padding-left: 40px; padding-right: 0; }
+            .timeline-dot { left: auto; right: -8px; }
+            .timeline-item:nth-child(even) .timeline-dot { left: -8px; right: auto; }
+            .timeline-item:nth-child(odd) .timeline-content { text-align: right; }
+
+            .footer { padding-top: 100px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 64px; margin-bottom: 80px; }
+            .footer-bottom { flex-direction: row; justify-content: space-between; text-align: left; }
+        }
+
+        @media (min-width: 1024px) {
+            .section-padding { padding: 160px 0; }
+            .section-header { margin-bottom: 80px; }
+            .title-main { font-size: 4rem; }
+            .about-hero-title { font-size: 6.5rem; }
+            .story-grid { grid-template-columns: 1fr 1.2fr; }
+            .values-grid { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+            .testi-grid { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+            .footer { padding-top: 120px; }
+            .footer-grid { grid-template-columns: 2fr 1fr 1.5fr; gap: 80px;}
+        }
+    </style>
+<style>
+/* Forcing the generic footer styles so that the newsletter and buttons render consistently everywhere */
+.footer-col .newsletter-form { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 500px; margin: 0 auto; }
+.footer-col .newsletter-input { 
+    width: 100%; padding: 14px 20px !important; background: rgba(255,255,255,0.03) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 4px !important; 
+    color: var(--text-white) !important; font-family: var(--font-main) !important; font-size: 0.9rem !important; 
+    outline: none !important; transition: border-color var(--transition-speed) !important; 
+}
+.footer-col .newsletter-input:focus { border-color: var(--text-white) !important; }
+.footer-col .btn-subscribe { 
+    display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; 
+    padding: 14px 24px !important; background: var(--text-white) !important; color: var(--text-black, #000) !important; 
+    border: none !important; border-radius: 4px !important; font-weight: 600 !important; font-size: 0.85rem !important; 
+    letter-spacing: 0.5px !important; cursor: pointer !important; transition: transform var(--transition-speed), box-shadow var(--transition-speed) !important; 
+}
+.footer-col .btn-subscribe:hover { transform: scale(1.02) !important; box-shadow: 0 10px 20px rgba(255,255,255,0.1) !important; }
+@media (min-width: 768px) {
+    .footer-col .newsletter-form { flex-direction: row; align-items: stretch; justify-content: flex-start; margin: 0; }
+    .footer-col .newsletter-input { margin-bottom: 0; }
+}
+</style>
+<style>:root[data-theme="light"] img[src="whitelogo.webp"] { filter: brightness(0); }</style>
+
+<style>
+/* PRELOADER STYLES */
+.preloader-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000000; z-index: 999999;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+.preloader-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.fingerprint-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  animation: flicker 3s infinite ease-in-out;
+  border-radius: 50%;
+}
+
+.fingerprint-svg {
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+  filter: drop-shadow(0 0 10px #ffffff);
+  transform: scale(1.1);
+  transition: transform 0.2s ease, filter 0.3s ease;
+}
+
+.fingerprint-path {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 0;
+  animation: draw 4s infinite linear;
+}
+
+.scan-line {
+  position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+  background: linear-gradient(to right, transparent, #ffffff, transparent);
+  animation: scan 1s infinite linear;
+  opacity: 0.7;
+}
+
+.matrix-rain {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  opacity: 0.5; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
+  overflow: hidden; border-radius: 50%;
+}
+
+.matrix-rain::before {
+  content: "101010 1100 0011 0101 1001 1110 0010 1101";
+  position: absolute; color: #ffffff; font-size: 14px; opacity: 0.2;
+  animation: rain 1.5s infinite linear;
+}
+
+.ripple1, .ripple2, .ripple3 {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  border-radius: 50%; border: 2px solid #ffffff; opacity: 0; transform: scale(0);
+}
+
+.glow {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  border-radius: 50%; box-shadow: 0 0 20px #ffffff; opacity: 0;
+}
+
+.status {
+  position: absolute; bottom: -30px; width: 100%; text-align: center;
+  color: #ffffff; font-size: 16px; opacity: 0.7; text-transform: uppercase;
+  letter-spacing: 2px; animation: glitch-text 2s infinite;
+}
+
+/* Animations */
+@keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } 75% { opacity: 0.95; } }
+@keyframes draw { 0% { stroke-dashoffset: 500; } 100% { stroke-dashoffset: 0; } }
+@keyframes scan { 0% { transform: translateY(0); opacity: 0.7; } 50% { opacity: 1; } 100% { transform: translateY(200px); opacity: 0.7; } }
+@keyframes rain { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+@keyframes glitch-text { 0% { transform: translate(0); } 20% { transform: translate(-1px, 1px); } 40% { transform: translate(1px, -1px); } 60% { transform: translate(-1px, 0); } 80% { transform: translate(1px, 0); } 100% { transform: translate(0); } }
+
+/* Light Mode Preloader Overrides */
+:root[data-theme="light"] .preloader-overlay { background: #ffffff; }
+:root[data-theme="light"] .fingerprint-svg { color: #000000; filter: drop-shadow(0 0 10px #000000); }
+:root[data-theme="light"] .scan-line { background: linear-gradient(to right, transparent, #000000, transparent); opacity: 0.4; }
+:root[data-theme="light"] .matrix-rain { background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent); }
+:root[data-theme="light"] .matrix-rain::before { color: #000000; }
+:root[data-theme="light"] .ripple1, :root[data-theme="light"] .ripple2, :root[data-theme="light"] .ripple3 { border: 2px solid #000000; }
+:root[data-theme="light"] .glow { box-shadow: 0 0 20px #000000; opacity: 0; }
+:root[data-theme="light"] .status { color: #000000; }
+</style>
+</head>
+
+<body>
+<div id="global-preloader" class="preloader-overlay">
+  <div class="fingerprint-container">
+    <svg viewBox="0 0 256 256" height="256" width="256" xmlns="http://www.w3.org/2000/svg" class="fingerprint-svg">
+      <path d="M126.42 24C70.73 24.85 25.21 70.09 24 125.81a103.53 103.53 0 0 0 13.52 53.54a4 4 0 0 0 7.1-.3a119.35 119.35 0 0 0 11.37-51A71.77 71.77 0 0 1 83 71.83a8 8 0 1 1 9.86 12.61A55.82 55.82 0 0 0 72 128.07a135.3 135.3 0 0 1-18.45 68.35a4 4 0 0 0 .61 4.85c2 2 4.09 4 6.25 5.82a4 4 0 0 0 6-1A151.2 151.2 0 0 0 85 158.49a8 8 0 1 1 15.68 3.19a167.3 167.3 0 0 1-21.07 53.64a4 4 0 0 0 1.6 5.63c2.47 1.25 5 2.41 7.57 3.47a4 4 0 0 0 5-1.61A183 183 0 0 0 120 128.28a8.16 8.16 0 0 1 7.44-8.21a8 8 0 0 1 8.56 8a198.94 198.94 0 0 1-25.21 97.16a4 4 0 0 0 2.95 5.92q4.55.63 9.21.86a4 4 0 0 0 3.67-2.1A214.9 214.9 0 0 0 152 128.8c.05-13.25-10.3-24.49-23.54-24.74A24 24 0 0 0 104 128a8.1 8.1 0 0 1-7.29 8a8 8 0 0 1-8.71-8a40 40 0 0 1 40.42-40c22 .23 39.68 19.17 39.57 41.16a231.4 231.4 0 0 1-20.52 94.57a4 4 0 0 0 4.62 5.51a104 104 0 0 0 10.26-3a4 4 0 0 0 2.35-2.22a244 244 0 0 0 11.48-34a8 8 0 1 1 15.5 4q-1.12 4.37-2.4 8.7a4 4 0 0 0 6.46 4.17A104 104 0 0 0 126.42 24M198 161.08a8 8 0 0 1-7.92 7a8 8 0 0 1-1-.06a8 8 0 0 1-6.95-8.93a253 253 0 0 0 1.92-31a56.08 56.08 0 0 0-56-56a57 57 0 0 0-7 .43a8 8 0 0 1-2-15.89a72.1 72.1 0 0 1 81 71.49a267 267 0 0 1-2.05 32.96" stroke-width="1" stroke="currentColor" fill="currentColor" class="fingerprint-path"></path>
+    </svg>
+    <div class="scan-line"></div>
+    <div class="matrix-rain"></div>
+    <div class="ripple1"></div>
+    <div class="ripple2"></div>
+    <div class="ripple3"></div>
+    <div class="glow"></div>
+    <div class="status">Loading...</div>
+  </div>
+</div>
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="nav-logo magnetic-elem">
+            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain; "></a>
+
+                <div class="nav-links">
+            <a href="index.html" class="magnetic-elem">Home</a>
+            <a href="about.html" class="magnetic-elem" style="color: var(--text-white);">About</a>
+            <a href="services.html" class="magnetic-elem">Services</a>
+            <a href="blog.html" class="magnetic-elem">Blog</a>
+            <a href="contact.html" class="magnetic-elem">Contact</a>
+        </div>
+
+        <div class="nav-actions">
+            <!-- Day/Night Toggle -->
+            <label class="theme-switch magnetic-elem">
+                <input type="checkbox" id="theme-toggle">
+                <span class="theme-toggle-slider"></span>
+            </label>
+
+            <button class="btn-primary magnetic-elem" onclick="window.location.href='login.html'">Login</button>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <line x1="4" y1="12" x2="20" y2="12"></line>
+                    <line x1="4" y1="6" x2="20" y2="6"></line>
+                    <line x1="4" y1="18" x2="20" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobile-menu">
+                <nav class="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html" style="color: var(--text-white); font-weight: 500; font-size: 1.2rem; margin-top: 40px; border-bottom: 1px solid var(--text-white); padding-bottom: 8px;">Login</a>
+        </nav>
+    </div>
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+        <div class="container about-hero-content">
+            <div id="hero-anim">
+                <h2 class="subtitle" style="justify-content: center; margin-bottom: 32px;">Our Mission</h2>
+                <h1 class="about-hero-title">
+                    Engineering <span style="color: var(--text-gray-400); font-style: italic; font-weight: 300;">Trust.</span>
+                </h1>
+                <p class="about-hero-desc">
+                    We exist to protect the digital frontier. Stackly was founded on the principle that absolute security shouldn't compromise speed, innovation, or scale.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="section-padding story-section">
+        <div class="container">
+            <div class="story-grid">
+                <div class="story-content reveal-up">
+                    <div class="section-header left">
+                        <h2 class="subtitle">Origins</h2>
+                        <h3 class="title-main">Born from the breach.</h3>
+                    </div>
+                    <p>
+                        In 2018, witnessing the cascading failures of legacy firewalls against sophisticated state-sponsored attacks, a group of offensive security researchers and systems architects came together.
+                    </p>
+                    <p>
+                        We realized that defending modern infrastructure required a fundamental shift: moving away from perimeter-based defense to a mathematically rigorous, zero-trust paradigm. Today, Stackly secures over $500B in daily enterprise transactions.
+                    </p>
+                </div>
+                <div class="story-image reveal-up" style="transition-delay: 0.2s;">
+                    <img src="images/pexels-sora-shimazaki-5935794.webp" alt="Server Infrastructure">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="subtitle">Core Values</h2>
+                <h3 class="title-main">The Stackly Protocol.</h3>
+            </div>
+
+            <div class="values-grid">
+                <!-- Value 1 -->
+                <div class="value-card reveal-up magnetic-elem">
+                    <svg class="value-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                    <h4 class="value-title">Zero Assumptions</h4>
+                    <p class="value-desc">We trust nothing by default. Every packet, every identity, and every request must mathematically prove its legitimacy before execution.</p>
+                </div>
+
+                <!-- Value 2 -->
+                <div class="value-card reveal-up magnetic-elem" style="transition-delay: 0.1s;">
+                    <svg class="value-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                    </svg>
+                    <h4 class="value-title">Offensive Defense</h4>
+                    <p class="value-desc">To build impenetrable walls, you must think like the attacker. Our defensive strategies are continuously tested by elite red teams.</p>
+                </div>
+
+                <!-- Value 3 -->
+                <div class="value-card reveal-up magnetic-elem" style="transition-delay: 0.2s;">
+                    <svg class="value-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
+                    </svg>
+                    <h4 class="value-title">Radical Transparency</h4>
+                    <p class="value-desc">Security through obscurity is a myth. We open-source our core protocols and subject our infrastructure to continuous public audits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline History Section -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="subtitle">Evolution</h2>
+                <h3 class="title-main">Our Trajectory.</h3>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-item reveal-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2018</span>
+                        <h4 class="timeline-title">The Foundation</h4>
+                        <p class="timeline-desc">Stackly is established by a team of offensive security experts with a unified vision to rethink enterprise infrastructure defense from the ground up.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2020</span>
+                        <h4 class="timeline-title">Series A & Threat Intel</h4>
+                        <p class="timeline-desc">Secured $45M in funding to scale our AI-driven threat intelligence grid. Deployed our first 1,000 decentralized honeypots globally.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2023</span>
+                        <h4 class="timeline-title">Zero-Trust Protocol V2</h4>
+                        <p class="timeline-desc">Launched our flagship Zero-Trust Identity gateway, fundamentally removing the concept of a secure perimeter and protecting over 50 Fortune 500 companies.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2026</span>
+                        <h4 class="timeline-title">Global Dominance</h4>
+                        <p class="timeline-desc">Expanded operations to 14 countries. Recognized as the definitive industry standard for securing decentralized and cloud-native architecture.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Section -->
+    <section class="section-padding story-section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="subtitle">Leadership</h2>
+                <h3 class="title-main">Architects of Security.</h3>
+            </div>
+
+            <div class="team-grid">
+                <!-- Team 1 -->
+                <div class="team-member reveal-up magnetic-elem">
+                    <div class="team-img-wrap">
+                        <img src="images/pexels-jibarofoto-3695354.webp" alt="CEO">
+                    </div>
+                    <div class="team-info">
+                        <span class="team-role">Chief Executive Officer</span>
+                        <h4 class="team-name">Elena Rostova</h4>
+                    </div>
+                </div>
+
+                <!-- Team 2 -->
+                <div class="team-member reveal-up magnetic-elem" style="transition-delay: 0.1s;">
+                    <div class="team-img-wrap">
+                        <img src="images/pexels-shkrabaanthony-5475752.webp" alt="CTO">
+                    </div>
+                    <div class="team-info">
+                        <span class="team-role">Chief Technology Officer</span>
+                        <h4 class="team-name">Marcus Chen</h4>
+                    </div>
+                </div>
+
+                <!-- Team 3 -->
+                <div class="team-member reveal-up magnetic-elem" style="transition-delay: 0.2s;">
+                    <div class="team-img-wrap">
+                        <img src="images/pexels-sora-shimazaki-5926382.webp" alt="CISO">
+                    </div>
+                    <div class="team-info">
+                        <span class="team-role">Chief Info Security Officer</span>
+                        <h4 class="team-name">Sarah Jenkins</h4>
+                    </div>
+                </div>
+
+                <!-- Team 4 -->
+                <div class="team-member reveal-up magnetic-elem" style="transition-delay: 0.3s;">
+                    <div class="team-img-wrap">
+                        <img src="images/pexels-jibarofoto-3695354.webp" alt="Head of Research">
+                    </div>
+                    <div class="team-info">
+                        <span class="team-role">Head of Threat Intel</span>
+                        <h4 class="team-name">David Thorne</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section-padding testimonials-section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="subtitle">Client Trust</h2>
+                <h3 class="title-main">Securing the Elite.</h3>
+            </div>
+
+            <div class="testi-grid">
+                <!-- Testimonial 1 -->
+                <div class="testi-card reveal-up magnetic-elem">
+                    <svg class="quote-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                    <p class="testi-quote">"Deploying Stackly's Zero-Trust architecture was a paradigm shift for us. It neutralized three sophisticated payload attacks in the first quarter alone. They don't just log threats; they destroy them."</p>
+                    <div class="testi-author">
+                        <img class="testi-avatar" src="images/pexels-towfiqu-barbhuiya-3440682-11495746.webp" alt="Client Avatar">
+                        <div class="testi-info">
+                            <h4>Jameson Carter</h4>
+                            <span>CISO, Nexus Financial</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testi-card reveal-up magnetic-elem" style="transition-delay: 0.1s;">
+                    <svg class="quote-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                    <p class="testi-quote">"As a healthcare provider, data integrity is non-negotiable. Stackly's continuous Red Team exercises identified and patched vulnerabilities we didn't even know existed. Truly elite engineering."</p>
+                    <div class="testi-author">
+                        <img class="testi-avatar" src="images/pexels-sora-shimazaki-5935794.webp" alt="Client Avatar">
+                        <div class="testi-info">
+                            <h4>Dr. Anya Lin</h4>
+                            <span>CTO, CoreHealth Global</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testi-card reveal-up magnetic-elem" style="transition-delay: 0.2s;">
+                    <svg class="quote-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                    <p class="testi-quote">"The onboarding was seamless, and the global threat intelligence grid acts like a precognitive shield for our cloud clusters. Stackly is the most impressive security layer we have ever integrated."</p>
+                    <div class="testi-author">
+                        <img class="testi-avatar" src="images/pexels-sai-krishna-179319646-12524284.webp" alt="Client Avatar">
+                        <div class="testi-info">
+                            <h4>Michael Vane</h4>
+                            <span>VP Engineering, Synthetix</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section reveal-up">
+        <div class="container">
+            <h2 class="title-main" style="margin-bottom: 24px;">Ready to secure your enterprise?</h2>
+            <p class="hero-desc" style="margin: 0 auto 40px auto;">Join the world's most secure organizations relying on Stackly.</p>
+            <button class="btn-solid magnetic-elem" onclick="window.location.href='404.html'">Contact Sales <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- Animated Premium Footer -->
+    <footer class="footer" id="footer-section">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Col 1 -->
+                <div class="footer-col">
+                    <a href="index.html" class="nav-logo" style="margin-bottom: 32px; display: block;"><img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain;"></a>
+                    <p class="footer-col-desc">
+                        Engineering unbreakable digital perimeters for forward-thinking enterprises. Secure your future with confidence.
+                    </p>
+                    <div class="social-links">
+                        <a href="404.html" class="social-btn">IG</a>
+                        <a href="404.html" class="social-btn">X</a>
+                        <a href="404.html" class="social-btn">IN</a>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Quick Links</h4>
+                                        <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Emergency Response</h4>
+                    <p class="footer-col-desc" style="margin-bottom: 12px; font-size: 0.85rem;">Under active attack? Get immediate assistance from our incident response team.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); window.location.href='404.html';">
+                        <input type="email" placeholder="Work Email Address" class="newsletter-input" required>
+                        <button class="btn-subscribe">Request Backup <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Stackly Cybersecurity Systems. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="404.html">Privacy Protocol</a>
+                    <a href="404.html">Terms of Service</a>
+                    <a href="404.html">Vulnerability Disclosure</a>
+                </div>
+            </div>
+            
+        </div>
+        <!-- Huge Animated Brand Text -->
+        
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Clean Cursor & Magnetic Elements
+        const initCursor = () => {
+            const cursor = document.getElementById('cursor');
+            const magneticBtns = document.querySelectorAll('.magnetic-elem, a, button, .value-card, .team-member');
+
+            document.addEventListener('mousemove', (e) => {
+                gsap.to(cursor, {
+                    x: e.clientX,
+                    y: e.clientY,
+                    duration: 0.15,
+                    ease: "power2.out"
+                });
+            });
+
+            magneticBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                btn.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+                
+                if(btn.classList.contains('magnetic-elem')){
+                    btn.addEventListener('mousemove', (e) => {
+                        const rect = btn.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+
+                        gsap.to(btn, {
+                            x: x * 0.1, // Reduced effect slightly for larger cards
+                            y: y * 0.1,
+                            duration: 0.4,
+                            ease: "power2.out"
+                        });
+                    });
+
+                    btn.addEventListener('mouseleave', () => {
+                        gsap.to(btn, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" });
+                    });
+                }
+            });
+        };
+
+        // General GSAP Scroll Animations
+        const initAnimations = () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero Load Animation
+            gsap.from("#hero-anim > *", {
+                y: 50,
+                opacity: 0,
+                duration: 1.2,
+                stagger: 0.2,
+                ease: "power3.out",
+                delay: 0.1
+            });
+
+            // Universal Reveal Elements
+            gsap.utils.toArray('.reveal-up').forEach((elem) => {
+                gsap.to(elem, {
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%",
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+            });
+        };
+
+        // Mobile Menu Logic
+        const initMobileMenu = () => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const links = document.querySelectorAll('.mobile-nav a');
+
+            if (!btn || !menu) return;
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('active');
+                const isOpen = menu.classList.contains('active');
+                btn.innerHTML = isOpen
+                    ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'
+                    : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>';
+            });
+
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.remove('active');
+                    btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>';
+                });
+            });
+        };
+
+        // Theme Toggle
+        const initThemeToggle = () => {
+            const toggle = document.getElementById('theme-toggle');
+            if (!toggle) return;
+
+            // Check system preference or localStorage
+            const savedTheme = localStorage.getItem('stackly-theme');
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                toggle.checked = true;
+            }
+
+            toggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('stackly-theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('stackly-theme', 'dark');
+                }
+            });
+        };
+
+        // Init All
+        document.addEventListener('DOMContentLoaded', () => {
+            initThemeToggle();
+            initCursor();
+            initAnimations();
+            initMobileMenu();
+        });
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const preloader = document.getElementById('global-preloader');
+        if(!preloader) return;
+        const minTime = 2000;
+        const startTime = Date.now();
+        
+        const hidePreloader = () => {
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, minTime - elapsedTime);
+            setTimeout(() => {
+                preloader.classList.add('preloader-hidden');
+            }, remainingTime);
+        };
+
+        if (document.readyState === 'complete') {
+            hidePreloader();
+        } else {
+            window.addEventListener('load', hidePreloader);
+        }
+    });
+</script>
+</body>
+</html>

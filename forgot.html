@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stackly - Access Recovery</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000; 
+            --surface: #0a0a0a;
+            --text-white: #ffffff;
+            --text-black: #000000;
+            --text-gray-400: #a1a1aa;
+            --text-gray-500: #71717a;
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-border-hover: rgba(255, 255, 255, 0.15);
+            --accent-secondary: #3b82f6;
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --transition-speed: 0.5s;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.05), transparent 50%), radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05), transparent 40%);
+        }
+        .auth-card {
+            background: var(--surface); border: 1px solid var(--glass-border); padding: 48px; border-radius: 4px; width: 100%; max-width: 440px; text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5); position: relative; overflow: hidden;
+        }
+        .auth-card::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:2px; background: linear-gradient(90deg, transparent, var(--accent-secondary), transparent);
+        }
+        .nav-logo { font-size: 1.5rem; font-weight: 800; color: var(--text-white); letter-spacing: 2px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 12px; margin-bottom: 32px; text-decoration: none;}
+        .form-group { position: relative; margin-bottom: 24px; text-align: left; }
+        .form-input, .form-select {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--glass-border-hover);
+            padding: 16px 0; color: var(--text-white); font-family: var(--font-main); font-size: 1rem;
+            outline: none; transition: border-color 0.4s; border-radius: 0;
+        }
+        .form-select { 
+            appearance: none; cursor: pointer; color: var(--text-gray-400); 
+            background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23a1a1aa" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>');
+            background-repeat: no-repeat;
+            background-position: right 0px center;
+            background-size: 16px;
+        }
+        .form-select option { background: var(--bg-color); color: var(--text-white); }
+        .form-input:focus, .form-select:focus { border-color: var(--text-white); }
+        .form-label {
+            position: absolute; top: 16px; left: 0; color: var(--text-gray-500); font-size: 1rem;
+            pointer-events: none; transition: all 0.3s ease;
+        }
+        .form-input:focus ~ .form-label, .form-input:not(:placeholder-shown) ~ .form-label {
+            top: -12px; font-size: 0.75rem; color: var(--text-gray-400); font-family: var(--font-mono); letter-spacing: 1px; text-transform: uppercase;
+        }
+        .btn-solid {
+            width: 100%; padding: 16px; background-color: var(--text-white); color: var(--text-black);
+            font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px; border-radius: 99px;
+            border: none; cursor: pointer; transition: all var(--transition-speed); margin-top: 16px;
+        }
+        .btn-solid:hover { transform: scale(1.02); box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15); }
+        .auth-links { margin-top: 24px; font-size: 0.85rem; font-weight: 300; }
+        .auth-links a { color: var(--text-gray-400); text-decoration: none; transition: color 0.3s; }
+        .auth-links a:hover { color: var(--text-white); text-decoration: underline;}
+    </style>
+<style>
+/* Appended globally to guarantee footer newsletter styling */
+.newsletter-form { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 500px; margin: 0 auto; }
+.newsletter-input { 
+    width: 100%; padding: 14px 20px; background: rgba(255,255,255,0.03); 
+    border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 4px; 
+    color: var(--text-white); font-family: var(--font-main); font-size: 0.9rem; 
+    outline: none; transition: border-color var(--transition-speed); 
+}
+.newsletter-input:focus { border-color: var(--text-white); }
+.btn-subscribe { 
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; 
+    padding: 14px 24px; background: var(--text-white); color: var(--text-black, #000); 
+    border: none; border-radius: 4px; font-weight: 600; font-size: 0.85rem; 
+    letter-spacing: 0.5px; cursor: pointer; transition: transform var(--transition-speed), box-shadow var(--transition-speed); 
+}
+.btn-subscribe:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+@media (min-width: 768px) {
+    .newsletter-form { flex-direction: row; align-items: stretch; justify-content: flex-start; margin: 0; }
+    .newsletter-input { margin-bottom: 0; }
+}
+</style>
+<style>
+/* Forcing the generic footer styles so that the newsletter and buttons render consistently everywhere */
+.footer-col .newsletter-form { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 500px; margin: 0 auto; }
+.footer-col .newsletter-input { 
+    width: 100%; padding: 14px 20px !important; background: rgba(255,255,255,0.03) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 4px !important; 
+    color: var(--text-white) !important; font-family: var(--font-main) !important; font-size: 0.9rem !important; 
+    outline: none !important; transition: border-color var(--transition-speed) !important; 
+}
+.footer-col .newsletter-input:focus { border-color: var(--text-white) !important; }
+.footer-col .btn-subscribe { 
+    display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; 
+    padding: 14px 24px !important; background: var(--text-white) !important; color: var(--text-black, #000) !important; 
+    border: none !important; border-radius: 4px !important; font-weight: 600 !important; font-size: 0.85rem !important; 
+    letter-spacing: 0.5px !important; cursor: pointer !important; transition: transform var(--transition-speed), box-shadow var(--transition-speed) !important; 
+}
+.footer-col .btn-subscribe:hover { transform: scale(1.02) !important; box-shadow: 0 10px 20px rgba(255,255,255,0.1) !important; }
+@media (min-width: 768px) {
+    .footer-col .newsletter-form { flex-direction: row; align-items: stretch; justify-content: flex-start; margin: 0; }
+    .footer-col .newsletter-input { margin-bottom: 0; }
+}
+</style>
+<style>:root[data-theme="light"] img[src="whitelogo.webp"] { filter: brightness(0); }</style>
+
+<style>
+/* PRELOADER STYLES */
+.preloader-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000000; z-index: 999999;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+.preloader-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.fingerprint-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  animation: flicker 3s infinite ease-in-out;
+  border-radius: 50%;
+}
+
+.fingerprint-svg {
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+  filter: drop-shadow(0 0 10px #ffffff);
+  transform: scale(1.1);
+  transition: transform 0.2s ease, filter 0.3s ease;
+}
+
+.fingerprint-path {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 0;
+  animation: draw 4s infinite linear;
+}
+
+.scan-line {
+  position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+  background: linear-gradient(to right, transparent, #ffffff, transparent);
+  animation: scan 1s infinite linear;
+  opacity: 0.7;
+}
+
+.matrix-rain {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  opacity: 0.5; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
+  overflow: hidden; border-radius: 50%;
+}
+
+.matrix-rain::before {
+  content: "101010 1100 0011 0101 1001 1110 0010 1101";
+  position: absolute; color: #ffffff; font-size: 14px; opacity: 0.2;
+  animation: rain 1.5s infinite linear;
+}
+
+.ripple1, .ripple2, .ripple3 {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  border-radius: 50%; border: 2px solid #ffffff; opacity: 0; transform: scale(0);
+}
+
+.glow {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  border-radius: 50%; box-shadow: 0 0 20px #ffffff; opacity: 0;
+}
+
+.status {
+  position: absolute; bottom: -30px; width: 100%; text-align: center;
+  color: #ffffff; font-size: 16px; opacity: 0.7; text-transform: uppercase;
+  letter-spacing: 2px; animation: glitch-text 2s infinite;
+}
+
+/* Animations */
+@keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } 75% { opacity: 0.95; } }
+@keyframes draw { 0% { stroke-dashoffset: 500; } 100% { stroke-dashoffset: 0; } }
+@keyframes scan { 0% { transform: translateY(0); opacity: 0.7; } 50% { opacity: 1; } 100% { transform: translateY(200px); opacity: 0.7; } }
+@keyframes rain { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+@keyframes glitch-text { 0% { transform: translate(0); } 20% { transform: translate(-1px, 1px); } 40% { transform: translate(1px, -1px); } 60% { transform: translate(-1px, 0); } 80% { transform: translate(1px, 0); } 100% { transform: translate(0); } }
+
+/* Light Mode Preloader Overrides */
+:root[data-theme="light"] .preloader-overlay { background: #ffffff; }
+:root[data-theme="light"] .fingerprint-svg { color: #000000; filter: drop-shadow(0 0 10px #000000); }
+:root[data-theme="light"] .scan-line { background: linear-gradient(to right, transparent, #000000, transparent); opacity: 0.4; }
+:root[data-theme="light"] .matrix-rain { background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent); }
+:root[data-theme="light"] .matrix-rain::before { color: #000000; }
+:root[data-theme="light"] .ripple1, :root[data-theme="light"] .ripple2, :root[data-theme="light"] .ripple3 { border: 2px solid #000000; }
+:root[data-theme="light"] .glow { box-shadow: 0 0 20px #000000; opacity: 0; }
+:root[data-theme="light"] .status { color: #000000; }
+</style>
+</head>
+<body>
+<div id="global-preloader" class="preloader-overlay">
+  <div class="fingerprint-container">
+    <svg viewBox="0 0 256 256" height="256" width="256" xmlns="http://www.w3.org/2000/svg" class="fingerprint-svg">
+      <path d="M126.42 24C70.73 24.85 25.21 70.09 24 125.81a103.53 103.53 0 0 0 13.52 53.54a4 4 0 0 0 7.1-.3a119.35 119.35 0 0 0 11.37-51A71.77 71.77 0 0 1 83 71.83a8 8 0 1 1 9.86 12.61A55.82 55.82 0 0 0 72 128.07a135.3 135.3 0 0 1-18.45 68.35a4 4 0 0 0 .61 4.85c2 2 4.09 4 6.25 5.82a4 4 0 0 0 6-1A151.2 151.2 0 0 0 85 158.49a8 8 0 1 1 15.68 3.19a167.3 167.3 0 0 1-21.07 53.64a4 4 0 0 0 1.6 5.63c2.47 1.25 5 2.41 7.57 3.47a4 4 0 0 0 5-1.61A183 183 0 0 0 120 128.28a8.16 8.16 0 0 1 7.44-8.21a8 8 0 0 1 8.56 8a198.94 198.94 0 0 1-25.21 97.16a4 4 0 0 0 2.95 5.92q4.55.63 9.21.86a4 4 0 0 0 3.67-2.1A214.9 214.9 0 0 0 152 128.8c.05-13.25-10.3-24.49-23.54-24.74A24 24 0 0 0 104 128a8.1 8.1 0 0 1-7.29 8a8 8 0 0 1-8.71-8a40 40 0 0 1 40.42-40c22 .23 39.68 19.17 39.57 41.16a231.4 231.4 0 0 1-20.52 94.57a4 4 0 0 0 4.62 5.51a104 104 0 0 0 10.26-3a4 4 0 0 0 2.35-2.22a244 244 0 0 0 11.48-34a8 8 0 1 1 15.5 4q-1.12 4.37-2.4 8.7a4 4 0 0 0 6.46 4.17A104 104 0 0 0 126.42 24M198 161.08a8 8 0 0 1-7.92 7a8 8 0 0 1-1-.06a8 8 0 0 1-6.95-8.93a253 253 0 0 0 1.92-31a56.08 56.08 0 0 0-56-56a57 57 0 0 0-7 .43a8 8 0 0 1-2-15.89a72.1 72.1 0 0 1 81 71.49a267 267 0 0 1-2.05 32.96" stroke-width="1" stroke="currentColor" fill="currentColor" class="fingerprint-path"></path>
+    </svg>
+    <div class="scan-line"></div>
+    <div class="matrix-rain"></div>
+    <div class="ripple1"></div>
+    <div class="ripple2"></div>
+    <div class="ripple3"></div>
+    <div class="glow"></div>
+    <div class="status">Loading...</div>
+  </div>
+</div>
+    <div class="auth-card">
+        <a href="index.html" class="nav-logo" style="justify-content: center; display: flex; width: 100%;">
+            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain; ">
+        </a>
+        <h2 style="font-size: 1.8rem; margin-bottom: 8px; font-weight: 600;">Access Recovery</h2>
+        <p style="color: var(--text-gray-400); font-weight: 300; font-size: 0.95rem; margin-bottom: 32px;">Enter your recorded operator email to receive a secure reset link.</p>
+        
+        <form id="forgotForm">
+            <div class="form-group">
+                <input type="email" id="email" class="form-input" placeholder=" " required autocomplete="off">
+                <label for="email" class="form-label">Operator Email</label>
+            </div>
+            <div class="form-group">
+                <select id="role" class="form-select" required>
+                    <option value="" disabled selected hidden>Access Clearance Level...</option>
+                    <option value="user">Standard Agent (User)</option>
+                    <option value="admin">Command Center (Admin)</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn-solid">Send Reset Instructions</button>
+        </form>
+
+        <div class="auth-links">
+            <a href="login.html">&larr; Return to Authentication</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('forgotForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real scenario, this would send an email. For this task, route to 404.
+            window.location.href = '404.html';
+        });
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const preloader = document.getElementById('global-preloader');
+        if(!preloader) return;
+        const minTime = 2000;
+        const startTime = Date.now();
+        
+        const hidePreloader = () => {
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, minTime - elapsedTime);
+            setTimeout(() => {
+                preloader.classList.add('preloader-hidden');
+            }, remainingTime);
+        };
+
+        if (document.readyState === 'complete') {
+            hidePreloader();
+        } else {
+            window.addEventListener('load', hidePreloader);
+        }
+    });
+</script>
+</body>
+</html>

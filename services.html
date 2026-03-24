@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stackly Services - Enterprise Security Solutions</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Custom CSS (Inherited Base + Services Specific) -->
+    <style>
+        :root {
+            /* Ultra Premium Palette */
+            --bg-color: #000000; 
+            --surface: #0a0a0a;
+            --surface-elevated: #121212;
+            
+            --accent-primary: #ffffff; 
+            --accent-secondary: #3b82f6; 
+            --accent-glow: #8b5cf6; 
+            
+            --text-white: #ffffff;
+            --text-black: #000000;
+            --text-gray-300: #e4e4e7;
+            --text-gray-400: #a1a1aa;
+            --text-gray-500: #71717a;
+            
+            /* High-end Glassmorphism */
+            --glass-bg: rgba(255, 255, 255, 0.015);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-border-hover: rgba(255, 255, 255, 0.15);
+            
+            /* Nav Backgrounds */
+            --nav-bg: rgba(0, 0, 0, 0.5);
+            --mobile-menu-bg: rgba(0, 0, 0, 0.98);
+
+            /* Footer Brand Colors */
+            --brand-huge-color-1: rgba(255, 255, 255, 0.02);
+            --brand-huge-color-2: rgba(255, 255, 255, 0.08);
+
+            /* Fonts */
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --transition-speed: 0.5s; 
+
+            /* Slider Variables */
+            --slide-width: 48vw;
+            --slide-aspect: 2 / 3;
+            --slide-transition-duration: 800ms;
+            --slide-transition-easing: ease;
+            --slide-offset-mult: 0.85;
+        }
+
+        /* Light Theme Override */
+        :root[data-theme="light"] {
+            --bg-color: #ffffff; 
+            --surface: #f4f4f5;
+            --surface-elevated: #e4e4e7;
+            
+            --text-white: #000000;
+            --text-black: #ffffff;
+            --text-gray-300: #52525b;
+            --text-gray-400: #71717a;
+            --text-gray-500: #a1a1aa;
+            
+            --glass-bg: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-border-hover: rgba(0, 0, 0, 0.2);
+
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --mobile-menu-bg: rgba(255, 255, 255, 0.98);
+
+            /* Footer Brand Colors Light Mode */
+            --brand-huge-color-1: rgba(0, 0, 0, 0.03);
+            --brand-huge-color-2: rgba(0, 0, 0, 0.09);
+        }
+
+        /* Reset & Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.03), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.03), transparent 40%);
+        }
+
+        ::selection { background-color: var(--text-white); color: var(--text-black); }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { background: none; border: none; cursor: pointer; font-family: inherit; }
+        img { max-width: 100%; display: block; }
+
+        .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+        /* Custom Cursor */
+        #cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background-color: #ffffff; 
+            border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+            mix-blend-mode: difference;
+        }
+        #cursor.hovered { width: 40px; height: 40px; background-color: #ffffff; mix-blend-mode: difference; }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 50; padding: 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--nav-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--glass-border); transition: all var(--transition-speed);
+        }
+        .nav-logo {
+            font-size: 1.25rem; font-weight: 800; color: var(--text-white);
+            letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 12px;
+        }
+        .nav-logo-icon { color: var(--text-white); width: 24px; height: 24px; }
+        .nav-links {
+            display: none; gap: 48px; font-size: 0.8rem; font-weight: 500;
+            color: var(--text-gray-400); letter-spacing: 1px; text-transform: uppercase;
+        }
+        .nav-links a { transition: color var(--transition-speed); position: relative; }
+        .nav-links a:hover { color: var(--text-white); }
+        .nav-actions { display: flex; align-items: center; gap: 24px; }
+        
+        .btn-primary {
+            display: none; background: transparent; color: var(--text-white);
+            padding: 12px 28px; border: 1px solid var(--glass-border); border-radius: 99px;
+            font-weight: 500; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;
+            transition: all var(--transition-speed);
+        }
+        .btn-primary:hover { background-color: var(--text-white); color: var(--text-black); border-color: var(--text-white); }
+        .mobile-menu-btn { display: block; color: var(--text-white); z-index: 51; position: relative; }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            position: fixed; inset: 0; background: var(--mobile-menu-bg); backdrop-filter: blur(24px);
+            z-index: 40; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        .mobile-menu.active { transform: translateY(0); }
+        .mobile-nav {
+            display: flex; flex-direction: column; gap: 40px; text-align: center;
+            font-size: 1.5rem; font-weight: 400; letter-spacing: 4px; text-transform: uppercase;
+        }
+        .mobile-nav a { color: var(--text-gray-500); transition: color 0.4s; }
+        .mobile-nav a:hover { color: var(--text-white); }
+
+        /* Theme Toggle Switch */
+        .theme-switch { font-size: 14px; position: relative; display: inline-block; width: 3.5em; height: 2em; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .theme-toggle-slider { position: absolute; cursor: pointer; inset: 0; border: 2px solid var(--text-gray-400); border-radius: 50px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .theme-toggle-slider:before { position: absolute; content: ""; height: 1.4em; width: 1.4em; left: 0.15em; bottom: 0.15em; background-color: var(--text-white); border-radius: inherit; transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1); }
+        .theme-switch input:checked + .theme-toggle-slider { box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); border: 2px solid var(--text-white); background-color: var(--text-white); }
+        .theme-switch input:checked + .theme-toggle-slider:before { transform: translateX(1.5em); background-color: var(--text-black); }
+
+        /* General UI Elements */
+        .section-padding { padding: 80px 0; position: relative; }
+        .section-header { margin-bottom: 40px; text-align: center; position: relative; z-index: 10; }
+        .section-header.left { text-align: left; }
+        
+        .subtitle {
+            font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
+            color: var(--text-gray-400); margin-bottom: 24px; letter-spacing: 4px;
+            text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 16px;
+        }
+        .section-header.left .subtitle { justify-content: flex-start; }
+        .subtitle::before, .subtitle::after { content: ''; display: block; width: 40px; height: 1px; background-color: var(--glass-border-hover); }
+        .section-header.left .subtitle::after { display: none; }
+
+        .title-main { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; color: var(--text-white); }
+        
+        .btn-solid {
+            padding: 16px 36px; background-color: var(--text-white); color: var(--text-black);
+            font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px; border-radius: 99px;
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-solid:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15); }
+
+        /* Animations */
+        .reveal-up { opacity: 0; transform: translateY(40px); }
+
+        /* --- SERVICES PAGE SPECIFIC STYLES --- */
+
+        /* Services Hero */
+        .services-hero {
+            position: relative; min-height: 50vh; display: flex; align-items: center; justify-content: center;
+            padding-top: 120px; overflow: hidden; text-align: center; border-bottom: 1px solid var(--glass-border);
+            background: linear-gradient(to bottom, transparent, var(--surface));
+        }
+        .services-hero-content { position: relative; z-index: 10; max-width: 800px; }
+        .services-hero-title { font-size: 4rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 24px; line-height: 1.1; }
+        .services-hero-desc { font-size: 1.1rem; color: var(--text-gray-400); font-weight: 300; line-height: 1.8; }
+
+        /* Alternating Service Rows */
+        .service-row { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; padding: 80px 0; border-bottom: 1px solid var(--glass-border); }
+        .service-row:last-child { border-bottom: none; }
+        .service-content { order: 2; }
+        .service-image { order: 1; border-radius: 4px; overflow: hidden; border: 1px solid var(--glass-border); aspect-ratio: 4/3; position: relative; }
+        .service-image img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1.05); }
+        .service-row:hover .service-image img { filter: grayscale(0%); transform: scale(1); }
+        
+        .service-tag { font-family: var(--font-mono); color: var(--accent-secondary); font-size: 0.8rem; font-weight: 500; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; display: block; }
+        .service-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 24px; letter-spacing: -1px; color: var(--text-white); }
+        .service-desc { color: var(--text-gray-300); font-weight: 300; font-size: 1.05rem; line-height: 1.8; margin-bottom: 32px; }
+        
+        .service-list { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 16px; }
+        .service-list li { display: flex; align-items: flex-start; gap: 12px; color: var(--text-gray-400); font-size: 0.95rem; font-weight: 300;}
+        .service-list svg { color: var(--text-white); width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+
+        /* Methodology Grid */
+        .methodology-section { background: var(--bg-color); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); }
+        .methodology-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-top: 60px; }
+        .step-card { padding: 40px 32px; background: var(--surface); border: 1px solid var(--glass-border); border-radius: 4px; position: relative; overflow: hidden; transition: all var(--transition-speed); }
+        .step-card:hover { transform: translateY(-5px); border-color: var(--glass-border-hover); background: var(--surface-elevated); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .step-number { font-family: var(--font-mono); font-size: 5rem; font-weight: 800; color: var(--glass-border-hover); position: absolute; top: -10px; right: 10px; line-height: 1; z-index: 1; transition: color var(--transition-speed); }
+        .step-card:hover .step-number { color: rgba(255, 255, 255, 0.1); }
+        .step-card h4 { font-size: 1.5rem; margin-bottom: 16px; position: relative; z-index: 2; color: var(--text-white); }
+        .step-card p { color: var(--text-gray-400); line-height: 1.7; font-weight: 300; font-size: 0.95rem; position: relative; z-index: 2; }
+
+        /* ------------------------------------------------ */
+        /* --------- CYBER INFRASTRUCTURE SLIDER ---------- */
+        /* ------------------------------------------------ */
+        .slider-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 600px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background: var(--bg-color);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .slider--btn {
+            --size: 44px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.7;
+            transition: all 250ms cubic-bezier(0.215, 0.61, 0.355, 1);
+            z-index: 999;
+        }
+        .slider--btn:focus { outline: none; }
+        .slider--btn svg { width: 24px; height: 24px; stroke: white; }
+        .slider--btn:hover { opacity: 1; background: rgba(0, 0, 0, 0.8); scale: 1.05; }
+
+        .slider--btn__prev { left: 16px; }
+        .slider--btn__next { right: 16px; }
+
+        .slides__wrapper {
+            width: 100%; height: 100%;
+            display: grid; place-items: center;
+        }
+        .slides__wrapper > * { grid-area: 1 / -1; }
+
+        .slides, .slides--infos {
+            width: 100%; height: 100%;
+            pointer-events: none;
+            display: grid; place-items: center;
+        }
+        .slides > *, .slides--infos > * { grid-area: 1 / -1; }
+
+        .slide {
+            --slide-tx: 0px;
+            --slide-ty: 0vh;
+            --slide-tz: 0px;
+            --padding: 0px;
+            --offset: 0;
+
+            width: var(--slide-width);
+            height: auto;
+            aspect-ratio: var(--slide-aspect);
+            user-select: none;
+            perspective: 800px;
+            
+            opacity: 0;
+            visibility: hidden;
+
+            transform: perspective(1000px)
+                translate3d(var(--slide-tx), var(--slide-ty), var(--slide-tz))
+                rotateY(var(--slide-rotY)) scale(var(--slide-scale));
+            transition: transform var(--slide-transition-duration) var(--slide-transition-easing),
+                        opacity calc(var(--slide-transition-duration) / 2) ease,
+                        visibility 0s linear var(--slide-transition-duration);
+        }
+
+        .slide[data-current], .slide[data-next], .slide[data-previous] {
+            opacity: 1;
+            visibility: visible;
+            transition: transform var(--slide-transition-duration) var(--slide-transition-easing),
+                        opacity calc(var(--slide-transition-duration) / 2) ease,
+                        visibility 0s linear 0s;
+        }
+
+        .slide[data-current] {
+            --slide-scale: 1.1;
+            --slide-tz: 0px;
+            --slide-tx: 0px;
+            --slide-rotY: 0deg;
+            pointer-events: auto;
+            z-index: 20;
+        }
+
+        .slide[data-next] {
+            --slide-tx: calc(1 * var(--slide-width) * var(--slide-offset-mult));
+            --slide-rotY: -45deg;
+            --slide-tz: -150px;
+            --slide-scale: 1;
+            z-index: 10;
+        }
+
+        .slide[data-previous] {
+            --slide-tx: calc(-1 * var(--slide-width) * var(--slide-offset-mult));
+            --slide-rotY: 45deg;
+            --slide-tz: -150px;
+            --slide-scale: 1;
+            z-index: 10;
+        }
+
+        .slide[data-current] .slide--image { filter: brightness(1) contrast(1.1) blur(0px); }
+        .slide:not([data-current]) .slide--image { filter: brightness(0.4) grayscale(0.5) blur(10px); }
+
+        .slide__inner {
+            --rotX: 0; --rotY: 0; --bgPosX: 0%; --bgPosY: 0%;
+            position: relative;
+            left: calc(var(--padding) / 2);
+            top: calc(var(--padding) / 2);
+            width: calc(100% - var(--padding));
+            height: calc(100% - var(--padding));
+            transform-style: preserve-3d;
+            transform: rotateX(var(--rotX)) rotateY(var(--rotY));
+            border: 1px solid var(--glass-border-hover);
+            border-radius: 4px;
+        }
+
+        .slide--image__wrapper {
+            position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 4px;
+        }
+
+        .slide--image {
+            width: 100%; height: 100%; position: absolute; top: 50%; left: 50%; object-fit: cover;
+            transform: translate(-50%, -50%) scale(1.25) translate3d(var(--bgPosX), var(--bgPosY), 0);
+            transition: filter var(--slide-transition-duration) var(--slide-transition-easing);
+        }
+
+        .slide__bg {
+            position: absolute; 
+            inset: -20%;
+            background-image: var(--bg);
+            background-size: cover;
+            background-position: center center;
+            z-index: 0;
+            pointer-events: none;
+            transition: opacity var(--slide-transition-duration) ease, transform var(--slide-transition-duration) ease;
+        }
+
+        .slide__bg::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .slide__bg:not([data-current]) { opacity: 0; }
+        .slide__bg[data-previous] { transform: translateX(-10%); }
+        .slide__bg[data-next] { transform: translateX(10%); }
+
+        .slide-info {
+            --padding: 0px;
+            position: relative; width: var(--slide-width); height: 100%;
+            aspect-ratio: var(--slide-aspect); user-select: none; perspective: 800px; z-index: 100;
+        }
+
+        .slide-info[data-current] .slide-info--text span { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 250ms; }
+        .slide-info:not([data-current]) .slide-info--text span { opacity: 0; transform: translate3d(0, 100%, 0); transition-delay: 0ms; }
+
+        .slide-info__inner {
+            position: relative; left: calc(var(--padding) / 2); top: calc(var(--padding) / 2);
+            width: calc(100% - var(--padding)); height: calc(100% - var(--padding));
+            transform-style: preserve-3d; transform: rotateX(var(--rotX)) rotateY(var(--rotY));
+        }
+
+        .slide-info--text__wrapper {
+            --z-offset: 45px;
+            position: absolute; height: fit-content; left: 5%; bottom: 10%;
+            transform: translateZ(var(--z-offset)); z-index: 2; pointer-events: none;
+        }
+
+        .slide-info--text {
+            font-family: var(--font-main);
+            color: #ffffff !important;
+            overflow: hidden;
+        }
+
+        .slide-info--text span {
+            display: block; white-space: nowrap;
+            transition: var(--slide-transition-duration) var(--slide-transition-easing);
+            transition-property: opacity, transform;
+        }
+
+        .slide-info--text[data-title], .slide-info--text[data-subtitle] {
+            font-size: clamp(1.5rem, 6vw, 2.4rem); font-weight: 800; letter-spacing: 2px;
+            white-space: nowrap; text-transform: uppercase;
+        }
+        .slide-info--text[data-subtitle] {
+            margin-left: 10px; font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 600; color: var(--accent-secondary);
+        }
+        .slide-info--text[data-description] {
+            margin-left: 5px; font-size: clamp(0.8rem, 2.5vw, 0.95rem); font-family: var(--font-mono); font-weight: 400; color: var(--text-gray-400); margin-top: 12px; letter-spacing: 1px;
+        }
+
+        .slider-loader {
+            position: absolute; inset: 0; display: grid; place-items: center;
+            background: #000; z-index: 1000; opacity: 1; transition: opacity 0.5s ease-out;
+        }
+        .slider-loader .loader__text {
+            font-family: var(--font-mono); font-size: clamp(1rem, 2vw, 2rem); font-weight: 500; color: var(--text-gray-500); letter-spacing: 4px;
+        }
+
+        /* CTA Section */
+        .cta-section { padding: 120px 0; text-align: center; }
+
+        /* Footer Inherited Styles */
+        .footer { background-color: var(--bg-color); border-top: 1px solid var(--glass-border); padding-top: 80px; padding-bottom: 20px; position: relative; overflow: hidden; }
+        .footer::before { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80%; height: 500px; background: radial-gradient(ellipse at bottom, rgba(59, 130, 246, 0.05) 0%, transparent 60%); pointer-events: none; z-index: 0; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 60px; position: relative; z-index: 1;}
+        .footer-col-desc { color: var(--text-gray-400); line-height: 1.8; margin-bottom: 40px; font-size: 0.95rem; font-weight: 300; max-width: 320px;}
+        .social-links { display: flex; gap: 16px; }
+        .social-btn { width: 48px; height: 48px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-weight: 400; transition: all var(--transition-speed); font-size: 0.8rem; color: var(--text-gray-400); border-radius: 50%; }
+        .social-btn:hover { border-color: var(--text-white); color: var(--text-black); background: var(--text-white); }
+        .footer-title { font-family: var(--font-mono); color: var(--text-gray-500); font-weight: 500; margin-bottom: 32px; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;}
+        .footer-links li { margin-bottom: 20px; }
+        .footer-links a { color: var(--text-gray-300); transition: color var(--transition-speed); font-size: 0.95rem; font-weight: 300;}
+        .footer-links a:hover { color: var(--text-white); padding-left: 5px; }
+        .newsletter-input { width: 100%; background-color: transparent; border: none; border-bottom: 1px solid var(--glass-border); padding: 16px 0; color: var(--text-white); outline: none; transition: border-color 0.4s; font-size: 0.95rem; margin-bottom: 24px; border-radius: 0;}
+        .newsletter-input:focus { border-color: var(--text-white); }
+        .btn-subscribe { background-color: transparent; color: var(--text-white); font-weight: 500; padding: 0; border: none; border-bottom: 1px solid transparent; transition: all 0.4s; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;}
+        .btn-subscribe:hover { border-color: var(--text-white); gap: 12px;}
+        .footer-bottom { border-top: 1px solid var(--glass-border); padding-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 24px; color: var(--text-gray-500); font-size: 0.8rem; text-align: center; font-weight: 300; position: relative; z-index: 1;}
+        .footer-legal { display: flex; gap: 32px; }
+        .footer-legal a:hover { color: var(--text-white); }
+        .footer-brand-huge {
+            font-size: 18vw; font-weight: 900; line-height: 0.8; text-align: center; letter-spacing: -0.05em; pointer-events: none; user-select: none;
+            margin-bottom: -40px; margin-top: 40px; position: relative; z-index: 1;
+            background: linear-gradient(to right, var(--brand-huge-color-1) 20%, var(--brand-huge-color-2) 50%, var(--brand-huge-color-1) 80%);
+            background-size: 200% auto; color: transparent; -webkit-background-clip: text;
+        }
+
+        /* Media Queries */
+        @media (min-width: 768px) {
+            :root { 
+                --slide-width: min(35vw, 300px); 
+                --slide-offset-mult: 1.15;
+            }
+            .section-padding { padding: 120px 0; }
+            .section-header { margin-bottom: 60px; }
+            .nav-links { display: flex; }
+            .btn-primary { display: inline-flex; }
+            .mobile-menu-btn { display: none; }
+            
+            .title-main { font-size: 3.5rem; }
+            .services-hero-title { font-size: 5rem; }
+
+            .slider--btn__prev { left: 40px; }
+            .slider--btn__next { right: 40px; }
+
+            .service-row { grid-template-columns: 1fr 1fr; gap: 80px; padding: 120px 0; }
+            .service-row:nth-child(even) .service-content { order: 1; }
+            .service-row:nth-child(even) .service-image { order: 2; }
+            .service-image { aspect-ratio: 1/1; }
+
+            .footer { padding-top: 100px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 64px; margin-bottom: 80px; }
+            .footer-bottom { flex-direction: row; justify-content: space-between; text-align: left; }
+        }
+
+        @media (min-width: 1024px) {
+            :root { 
+                --slide-width: min(25vw, 300px); 
+                --slide-offset-mult: 1.35;
+            }
+
+            .slide[data-next] { --slide-tx: 125%; --slide-tz: -300px; --slide-rotY: -20deg; }
+            .slide[data-previous] { --slide-tx: -125%; --slide-tz: -300px; --slide-rotY: 20deg; }
+
+            .slider--btn__prev { left: 80px; }
+            .slider--btn__next { right: 80px; }
+
+            .slide-info--text__wrapper { left: -15%; bottom: 15%; }
+
+            .section-padding { padding: 160px 0; }
+            .section-header { margin-bottom: 80px; }
+            .title-main { font-size: 4rem; }
+            .services-hero-title { font-size: 6.5rem; }
+            
+            .service-row { gap: 120px; }
+
+            .footer { padding-top: 120px; }
+            .footer-grid { grid-template-columns: 2fr 1fr 1.5fr; gap: 80px;}
+        }
+    </style>
+<style>
+/* Forcing the generic footer styles so that the newsletter and buttons render consistently everywhere */
+.footer-col .newsletter-form { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 500px; margin: 0 auto; }
+.footer-col .newsletter-input { 
+    width: 100%; padding: 14px 20px !important; background: rgba(255,255,255,0.03) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 4px !important; 
+    color: var(--text-white) !important; font-family: var(--font-main) !important; font-size: 0.9rem !important; 
+    outline: none !important; transition: border-color var(--transition-speed) !important; 
+}
+.footer-col .newsletter-input:focus { border-color: var(--text-white) !important; }
+.footer-col .btn-subscribe { 
+    display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; 
+    padding: 14px 24px !important; background: var(--text-white) !important; color: var(--text-black, #000) !important; 
+    border: none !important; border-radius: 4px !important; font-weight: 600 !important; font-size: 0.85rem !important; 
+    letter-spacing: 0.5px !important; cursor: pointer !important; transition: transform var(--transition-speed), box-shadow var(--transition-speed) !important; 
+}
+.footer-col .btn-subscribe:hover { transform: scale(1.02) !important; box-shadow: 0 10px 20px rgba(255,255,255,0.1) !important; }
+@media (min-width: 768px) {
+    .footer-col .newsletter-form { flex-direction: row; align-items: stretch; justify-content: flex-start; margin: 0; }
+    .footer-col .newsletter-input { margin-bottom: 0; }
+}
+</style>
+<style>:root[data-theme="light"] img[src="whitelogo.webp"] { filter: brightness(0); }</style>
+
+<style>
+/* PRELOADER STYLES */
+.preloader-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000000; z-index: 999999;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+.preloader-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.fingerprint-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  animation: flicker 3s infinite ease-in-out;
+  border-radius: 50%;
+}
+
+.fingerprint-svg {
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+  filter: drop-shadow(0 0 10px #ffffff);
+  transform: scale(1.1);
+  transition: transform 0.2s ease, filter 0.3s ease;
+}
+
+.fingerprint-path {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 0;
+  animation: draw 4s infinite linear;
+}
+
+.scan-line {
+  position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+  background: linear-gradient(to right, transparent, #ffffff, transparent);
+  animation: scan 1s infinite linear;
+  opacity: 0.7;
+}
+
+.matrix-rain {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  opacity: 0.5; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
+  overflow: hidden; border-radius: 50%;
+}
+
+.matrix-rain::before {
+  content: "101010 1100 0011 0101 1001 1110 0010 1101";
+  position: absolute; color: #ffffff; font-size: 14px; opacity: 0.2;
+  animation: rain 1.5s infinite linear;
+}
+
+.ripple1, .ripple2, .ripple3 {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  border-radius: 50%; border: 2px solid #ffffff; opacity: 0; transform: scale(0);
+}
+
+.glow {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  border-radius: 50%; box-shadow: 0 0 20px #ffffff; opacity: 0;
+}
+
+.status {
+  position: absolute; bottom: -30px; width: 100%; text-align: center;
+  color: #ffffff; font-size: 16px; opacity: 0.7; text-transform: uppercase;
+  letter-spacing: 2px; animation: glitch-text 2s infinite;
+}
+
+/* Animations */
+@keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } 75% { opacity: 0.95; } }
+@keyframes draw { 0% { stroke-dashoffset: 500; } 100% { stroke-dashoffset: 0; } }
+@keyframes scan { 0% { transform: translateY(0); opacity: 0.7; } 50% { opacity: 1; } 100% { transform: translateY(200px); opacity: 0.7; } }
+@keyframes rain { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+@keyframes glitch-text { 0% { transform: translate(0); } 20% { transform: translate(-1px, 1px); } 40% { transform: translate(1px, -1px); } 60% { transform: translate(-1px, 0); } 80% { transform: translate(1px, 0); } 100% { transform: translate(0); } }
+
+/* Light Mode Preloader Overrides */
+:root[data-theme="light"] .preloader-overlay { background: #ffffff; }
+:root[data-theme="light"] .fingerprint-svg { color: #000000; filter: drop-shadow(0 0 10px #000000); }
+:root[data-theme="light"] .scan-line { background: linear-gradient(to right, transparent, #000000, transparent); opacity: 0.4; }
+:root[data-theme="light"] .matrix-rain { background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent); }
+:root[data-theme="light"] .matrix-rain::before { color: #000000; }
+:root[data-theme="light"] .ripple1, :root[data-theme="light"] .ripple2, :root[data-theme="light"] .ripple3 { border: 2px solid #000000; }
+:root[data-theme="light"] .glow { box-shadow: 0 0 20px #000000; opacity: 0; }
+:root[data-theme="light"] .status { color: #000000; }
+</style>
+</head>
+
+<body>
+<div id="global-preloader" class="preloader-overlay">
+  <div class="fingerprint-container">
+    <svg viewBox="0 0 256 256" height="256" width="256" xmlns="http://www.w3.org/2000/svg" class="fingerprint-svg">
+      <path d="M126.42 24C70.73 24.85 25.21 70.09 24 125.81a103.53 103.53 0 0 0 13.52 53.54a4 4 0 0 0 7.1-.3a119.35 119.35 0 0 0 11.37-51A71.77 71.77 0 0 1 83 71.83a8 8 0 1 1 9.86 12.61A55.82 55.82 0 0 0 72 128.07a135.3 135.3 0 0 1-18.45 68.35a4 4 0 0 0 .61 4.85c2 2 4.09 4 6.25 5.82a4 4 0 0 0 6-1A151.2 151.2 0 0 0 85 158.49a8 8 0 1 1 15.68 3.19a167.3 167.3 0 0 1-21.07 53.64a4 4 0 0 0 1.6 5.63c2.47 1.25 5 2.41 7.57 3.47a4 4 0 0 0 5-1.61A183 183 0 0 0 120 128.28a8.16 8.16 0 0 1 7.44-8.21a8 8 0 0 1 8.56 8a198.94 198.94 0 0 1-25.21 97.16a4 4 0 0 0 2.95 5.92q4.55.63 9.21.86a4 4 0 0 0 3.67-2.1A214.9 214.9 0 0 0 152 128.8c.05-13.25-10.3-24.49-23.54-24.74A24 24 0 0 0 104 128a8.1 8.1 0 0 1-7.29 8a8 8 0 0 1-8.71-8a40 40 0 0 1 40.42-40c22 .23 39.68 19.17 39.57 41.16a231.4 231.4 0 0 1-20.52 94.57a4 4 0 0 0 4.62 5.51a104 104 0 0 0 10.26-3a4 4 0 0 0 2.35-2.22a244 244 0 0 0 11.48-34a8 8 0 1 1 15.5 4q-1.12 4.37-2.4 8.7a4 4 0 0 0 6.46 4.17A104 104 0 0 0 126.42 24M198 161.08a8 8 0 0 1-7.92 7a8 8 0 0 1-1-.06a8 8 0 0 1-6.95-8.93a253 253 0 0 0 1.92-31a56.08 56.08 0 0 0-56-56a57 57 0 0 0-7 .43a8 8 0 0 1-2-15.89a72.1 72.1 0 0 1 81 71.49a267 267 0 0 1-2.05 32.96" stroke-width="1" stroke="currentColor" fill="currentColor" class="fingerprint-path"></path>
+    </svg>
+    <div class="scan-line"></div>
+    <div class="matrix-rain"></div>
+    <div class="ripple1"></div>
+    <div class="ripple2"></div>
+    <div class="ripple3"></div>
+    <div class="glow"></div>
+    <div class="status">Loading...</div>
+  </div>
+</div>
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="nav-logo magnetic-elem">
+            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain; "></a>
+
+                <div class="nav-links">
+            <a href="index.html" class="magnetic-elem">Home</a>
+            <a href="about.html" class="magnetic-elem">About</a>
+            <a href="services.html" class="magnetic-elem" style="color: var(--text-white);">Services</a>
+            <a href="blog.html" class="magnetic-elem">Blog</a>
+            <a href="contact.html" class="magnetic-elem">Contact</a>
+        </div>
+
+        <div class="nav-actions">
+            <!-- Day/Night Toggle -->
+            <label class="theme-switch magnetic-elem">
+                <input type="checkbox" id="theme-toggle">
+                <span class="theme-toggle-slider"></span>
+            </label>
+
+            <button class="btn-primary magnetic-elem" onclick="window.location.href='login.html'">Login</button>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <line x1="4" y1="12" x2="20" y2="12"></line>
+                    <line x1="4" y1="6" x2="20" y2="6"></line>
+                    <line x1="4" y1="18" x2="20" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobile-menu">
+                <nav class="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html" style="color: var(--text-white); font-weight: 500; font-size: 1.2rem; margin-top: 40px; border-bottom: 1px solid var(--text-white); padding-bottom: 8px;">Login</a>
+        </nav>
+    </div>
+
+    <!-- Services Hero Section -->
+    <section class="services-hero">
+        <div class="container services-hero-content">
+            <div id="hero-anim">
+                <h2 class="subtitle" style="justify-content: center; margin-bottom: 32px;">Enterprise Solutions</h2>
+                <h1 class="services-hero-title">
+                    Comprehensive <span style="color: var(--text-gray-400); font-style: italic; font-weight: 300;">Defense.</span>
+                </h1>
+                <p class="services-hero-desc">
+                    Explore our suite of specialized cybersecurity services. Engineered to proactively neutralize threats, maintain continuous compliance, and secure your entire digital footprint.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Services Section (Deep Dives) -->
+    <section class="section-padding">
+        <div class="container">
+            
+            <!-- Service 1: Zero Trust -->
+            <div class="service-row">
+                <div class="service-image reveal-up">
+                    <img src="images/pexels-julio-lopez-75309646-34258666.webp" alt="Server Data Center">
+                </div>
+                <div class="service-content reveal-up" style="transition-delay: 0.1s;">
+                    <span class="service-tag">01. Architecture</span>
+                    <h3 class="service-title">Zero-Trust Protocol</h3>
+                    <p class="service-desc">We implement a mathematically rigorous security framework that assumes breach. Every access request is strictly authenticated, authorized, and continuously validated before granting or maintaining access to applications and data.</p>
+                    
+                    <ul class="service-list">
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                            Micro-segmentation of internal networks
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                            Continuous identity & device verification
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                            Least privilege access controls
+                        </li>
+                    </ul>
+                    
+                    <button class="btn-outline magnetic-elem" onclick="window.location.href='404.html'" style="margin-top: 16px;">Explore Architecture</button>
+                </div>
+            </div>
+
+            <!-- Service 2: Threat Intel -->
+            <div class="service-row">
+                <div class="service-image reveal-up">
+                    <img src="images/pexels-sora-shimazaki-5935794.webp" alt="Code Matrix">
+                </div>
+                <div class="service-content reveal-up" style="transition-delay: 0.1s;">
+                    <span class="service-tag">02. Intelligence</span>
+                    <h3 class="service-title">AI Threat Hunting</h3>
+                    <p class="service-desc">Our proprietary AI algorithms continuously scan your environment, analyzing millions of data points to identify and neutralize sophisticated, hidden threats before they can execute their payloads.</p>
+                    
+                    <ul class="service-list">
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                            Predictive behavioral analysis models
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                            Global decentralized honeypot data
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                            Automated zero-day exploit mitigation
+                        </li>
+                    </ul>
+
+                    <button class="btn-outline magnetic-elem" onclick="window.location.href='404.html'" style="margin-top: 16px;">View AI Capabilities</button>
+                </div>
+            </div>
+
+            <!-- Service 3: Red Teaming -->
+            <div class="service-row">
+                <div class="service-image reveal-up">
+                    <img src="images/pexels-mati-6330644.webp" alt="Cyber Lock">
+                </div>
+                <div class="service-content reveal-up" style="transition-delay: 0.1s;">
+                    <span class="service-tag">03. Offensive Sec</span>
+                    <h3 class="service-title">Red Team Pen-Testing</h3>
+                    <p class="service-desc">We deploy elite ethical hackers to simulate highly targeted, multi-vector attacks against your organization. Discover your weaknesses before malicious actors do, and harden your defenses accordingly.</p>
+                    
+                    <ul class="service-list">
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                            Full-scope penetration testing
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                            Social engineering & phishing simulations
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                            Actionable remediation reporting
+                        </li>
+                    </ul>
+
+                    <button class="btn-outline magnetic-elem" onclick="window.location.href='404.html'" style="margin-top: 16px;">Schedule Assessment</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Methodology Grid Section -->
+    <section class="section-padding methodology-section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="subtitle">Deployment Process</h2>
+                <h3 class="title-main">How We Secure You.</h3>
+            </div>
+
+            <div class="methodology-grid">
+                <!-- Step 1 -->
+                <div class="step-card reveal-up magnetic-elem">
+                    <span class="step-number">01</span>
+                    <h4>Audit & Discovery</h4>
+                    <p>We begin by mapping your entire digital footprint, identifying vulnerabilities, legacy systems, and compliance gaps across your cloud and on-premise assets.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card reveal-up magnetic-elem" style="transition-delay: 0.1s;">
+                    <span class="step-number">02</span>
+                    <h4>Architecture Design</h4>
+                    <p>Our engineers craft a custom Zero-Trust deployment strategy tailored to your business operations, ensuring maximum security with zero latency.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card reveal-up magnetic-elem" style="transition-delay: 0.2s;">
+                    <span class="step-number">03</span>
+                    <h4>Active Hardening</h4>
+                    <p>We seamlessly integrate the Stackly protocol, deploying micro-segmentation, identity firewalls, and AI monitoring tools without causing operational downtime.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card reveal-up magnetic-elem" style="transition-delay: 0.3s;">
+                    <span class="step-number">04</span>
+                    <h4>Continuous Defense</h4>
+                    <p>Once live, your network is handed over to our 24/7 SOC team. We continuously monitor, hunt threats, and update firewall rules globally in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cyber Infrastructure Showcase Slider -->
+    <section class="slider-section reveal-up">
+        <div class="container" style="position: absolute; top: 12%; z-index: 10;">
+            <div class="section-header" style="margin-bottom: 0;">
+                <h2 class="subtitle">Core Infrastructure</h2>
+            </div>
+        </div>
+
+        <div class="slider">
+            <button class="slider--btn slider--btn__prev magnetic-elem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+            </button>
+
+            <div class="slides__wrapper">
+                <div class="slides">
+                    <!-- slide 1 -->
+                    <div class="slide" data-current>
+                        <div class="slide__inner">
+                            <div class="slide--image__wrapper">
+                                <img class="slide--image" src="images/pexels-julio-lopez-75309646-34258666.webp" alt="Core Network Server Room" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide__bg" style="--bg: url(images/pexels-julio-lopez-75309646-34258666.webp); --dir: 0" data-current></div>
+
+                    <!-- slide 2 -->
+                    <div class="slide" data-next>
+                        <div class="slide__inner">
+                            <div class="slide--image__wrapper">
+                                <img class="slide--image" src="images/pexels-sora-shimazaki-5935794.webp" alt="Matrix Cyber Code" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide__bg" style="--bg: url(images/pexels-mati-6330644.webp); --dir: 1" data-next></div>
+
+                    <!-- slide 3 -->
+                    <div class="slide" data-previous>
+                        <div class="slide__inner">
+                            <div class="slide--image__wrapper">
+                                <img class="slide--image" src="images/pexels-mati-6330644.webp" alt="Cyber Security Lock" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide__bg" style="--bg: url(images/pexels-sora-shimazaki-5935794.webp); --dir: -1" data-previous></div>
+                </div>
+                <div class="slides--infos">
+                    <!-- Slide Info 1 -->
+                    <div class="slide-info" data-current>
+                        <div class="slide-info__inner">
+                            <div class="slide-info--text__wrapper">
+                                <div data-title class="slide-info--text">
+                                    <span>Core Network</span>
+                                </div>
+                                <div data-subtitle class="slide-info--text">
+                                    <span>Infrastructure</span>
+                                </div>
+                                <div data-description class="slide-info--text">
+                                    <span>Resilient zero-trust architecture</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide Info 2 -->
+                    <div class="slide-info" data-next>
+                        <div class="slide-info__inner">
+                            <div class="slide-info--text__wrapper">
+                                <div data-title class="slide-info--text">
+                                    <span>Threat Intel</span>
+                                </div>
+                                <div data-subtitle class="slide-info--text">
+                                    <span>Global Grid</span>
+                                </div>
+                                <div data-description class="slide-info--text">
+                                    <span>AI-driven anomaly detection</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide Info 3 -->
+                    <div class="slide-info" data-previous>
+                        <div class="slide-info__inner">
+                            <div class="slide-info--text__wrapper">
+                                <div data-title class="slide-info--text">
+                                    <span>SOC Defense</span>
+                                </div>
+                                <div data-subtitle class="slide-info--text">
+                                    <span>Active Monitoring</span>
+                                </div>
+                                <div data-description class="slide-info--text">
+                                    <span>24/7 proactive incident response</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="slider--btn slider--btn__next magnetic-elem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m9 18 6-6-6-6" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="slider-loader">
+            <span class="loader__text">0%</span>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section reveal-up">
+        <div class="container">
+            <h2 class="title-main" style="margin-bottom: 24px;">Ready to secure your enterprise?</h2>
+            <p class="hero-desc" style="margin: 0 auto 40px auto;">Our solutions engineers are ready to build your custom defense plan.</p>
+            <button class="btn-solid magnetic-elem">
+                Request Consultation
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- Animated Premium Footer -->
+    <footer class="footer" id="footer-section">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Col 1 -->
+                <div class="footer-col">
+                    <a href="index.html" class="nav-logo" style="margin-bottom: 32px; display: block;"><img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain;"></a>
+                    <p class="footer-col-desc">
+                        Engineering unbreakable digital perimeters for forward-thinking enterprises. Secure your future with confidence.
+                    </p>
+                    <div class="social-links">
+                        <a href="404.html" class="social-btn">IG</a>
+                        <a href="404.html" class="social-btn">X</a>
+                        <a href="404.html" class="social-btn">IN</a>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Quick Links</h4>
+                                        <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Emergency Response</h4>
+                    <p class="footer-col-desc" style="margin-bottom: 12px; font-size: 0.85rem;">Under active attack? Get immediate assistance from our incident response team.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); window.location.href='404.html';">
+                        <input type="email" placeholder="Work Email Address" class="newsletter-input" required>
+                        <button class="btn-subscribe">Request Backup <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Stackly Cybersecurity Systems. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="404.html">Privacy Protocol</a>
+                    <a href="404.html">Terms of Service</a>
+                    <a href="404.html">Vulnerability Disclosure</a>
+                </div>
+            </div>
+            
+        </div>
+        <!-- Huge Animated Brand Text -->
+        
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Clean Cursor & Magnetic Elements
+        const initCursor = () => {
+            const cursor = document.getElementById('cursor');
+            const magneticBtns = document.querySelectorAll('.magnetic-elem, a, button, .step-card');
+
+            document.addEventListener('mousemove', (e) => {
+                gsap.to(cursor, {
+                    x: e.clientX,
+                    y: e.clientY,
+                    duration: 0.15,
+                    ease: "power2.out"
+                });
+            });
+
+            magneticBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                btn.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+                
+                if(btn.classList.contains('magnetic-elem')){
+                    btn.addEventListener('mousemove', (e) => {
+                        const rect = btn.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+
+                        gsap.to(btn, {
+                            x: x * 0.15, 
+                            y: y * 0.15,
+                            duration: 0.4,
+                            ease: "power2.out"
+                        });
+                    });
+
+                    btn.addEventListener('mouseleave', () => {
+                        gsap.to(btn, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" });
+                    });
+                }
+            });
+        };
+
+        // General GSAP Scroll Animations
+        const initAnimations = () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero Load Animation
+            gsap.from("#hero-anim > *", {
+                y: 50,
+                opacity: 0,
+                duration: 1.2,
+                stagger: 0.2,
+                ease: "power3.out",
+                delay: 0.1
+            });
+
+            // Universal Reveal Elements
+            gsap.utils.toArray('.reveal-up').forEach((elem) => {
+                gsap.to(elem, {
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%",
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+            });
+        };
+
+        // Mobile Menu Logic
+        const initMobileMenu = () => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const links = document.querySelectorAll('.mobile-nav a');
+
+            if (!btn || !menu) return;
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('active');
+                const isOpen = menu.classList.contains('active');
+                btn.innerHTML = isOpen
+                    ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'
+                    : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>';
+            });
+
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.remove('active');
+                    btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>';
+                });
+            });
+        };
+
+        // Theme Toggle
+        const initThemeToggle = () => {
+            const toggle = document.getElementById('theme-toggle');
+            if (!toggle) return;
+
+            // Check system preference or localStorage
+            const savedTheme = localStorage.getItem('stackly-theme');
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                toggle.checked = true;
+            }
+
+            toggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('stackly-theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('stackly-theme', 'dark');
+                }
+            });
+        };
+
+        // Init All
+        document.addEventListener('DOMContentLoaded', () => {
+            initThemeToggle();
+            initCursor();
+            initAnimations();
+            initMobileMenu();
+        });
+    </script>
+
+    <!-- Slider JS module -->
+    <script type="module">
+        import imagesLoaded from "https://esm.sh/imagesloaded";
+
+        // Math utilities
+        const wrap = (n, max) => (n + max) % max;
+        const lerp = (a, b, t) => a + (b - a) * t;
+
+        const genId = (() => {
+            let count = 0;
+            return () => (count++).toString();
+        })();
+
+        class Raf {
+            constructor() {
+                this.rafId = 0;
+                this.raf = this.raf.bind(this);
+                this.callbacks = [];
+                this.start();
+            }
+            start() { this.raf(); }
+            stop() { cancelAnimationFrame(this.rafId); }
+            raf() {
+                this.callbacks.forEach(({ callback, id }) => callback({ id }));
+                this.rafId = requestAnimationFrame(this.raf);
+            }
+            add(callback, id) { this.callbacks.push({ callback, id: id || genId() }); }
+            remove(id) { this.callbacks = this.callbacks.filter((callback) => callback.id !== id); }
+        }
+
+        class Vec2 {
+            constructor(x = 0, y = 0) { this.x = x; this.y = y; }
+            set(x, y) { this.x = x; this.y = y; }
+            lerp(v, t) {
+                this.x = lerp(this.x, v.x, t);
+                this.y = lerp(this.y, v.y, t);
+            }
+        }
+
+        const vec2 = (x = 0, y = 0) => new Vec2(x, y);
+
+        export function tilt(node, options) {
+            let { trigger, target } = resolveOptions(node, options);
+            let lerpAmount = 0.06;
+
+            const rotDeg = { current: vec2(), target: vec2() };
+            const bgPos = { current: vec2(), target: vec2() };
+
+            const update = (newOptions) => {
+                destroy();
+                ({ trigger, target } = resolveOptions(node, newOptions));
+                init();
+            };
+
+            let rafId;
+
+            function ticker({ id }) {
+                rafId = id;
+                rotDeg.current.lerp(rotDeg.target, lerpAmount);
+                bgPos.current.lerp(bgPos.target, lerpAmount);
+
+                for (const el of target) {
+                    el.style.setProperty("--rotX", rotDeg.current.y.toFixed(2) + "deg");
+                    el.style.setProperty("--rotY", rotDeg.current.x.toFixed(2) + "deg");
+                    el.style.setProperty("--bgPosX", bgPos.current.x.toFixed(2) + "%");
+                    el.style.setProperty("--bgPosY", bgPos.current.y.toFixed(2) + "%");
+                }
+            }
+
+            const onMouseMove = ({ offsetX, offsetY }) => {
+                lerpAmount = 0.1;
+                for (const el of target) {
+                    const ox = (offsetX - el.clientWidth * 0.5) / (Math.PI * 3);
+                    const oy = -(offsetY - el.clientHeight * 0.5) / (Math.PI * 4);
+                    rotDeg.target.set(ox, oy);
+                    bgPos.target.set(-ox * 0.3, oy * 0.3);
+                }
+            };
+
+            const onMouseLeave = () => {
+                lerpAmount = 0.06;
+                rotDeg.target.set(0, 0);
+                bgPos.target.set(0, 0);
+            };
+
+            const addListeners = () => {
+                trigger.addEventListener("mousemove", onMouseMove);
+                trigger.addEventListener("mouseleave", onMouseLeave);
+            };
+
+            const removeListeners = () => {
+                trigger.removeEventListener("mousemove", onMouseMove);
+                trigger.removeEventListener("mouseleave", onMouseLeave);
+            };
+
+            const init = () => { addListeners(); rafSlider.add(ticker); };
+            const destroy = () => { removeListeners(); rafSlider.remove(rafId); };
+
+            init();
+            return { destroy, update };
+        }
+
+        function resolveOptions(node, options) {
+            return {
+                trigger: options?.trigger ?? node,
+                target: options?.target ? Array.isArray(options.target) ? options.target : [options.target] : [node]
+            };
+        }
+
+        const rafSlider = new Raf();
+
+        function initSlider() {
+            const loader = document.querySelector(".slider-loader");
+            const slides = [...document.querySelectorAll(".slide")];
+            const slidesInfo = [...document.querySelectorAll(".slide-info")];
+            const buttons = {
+                prev: document.querySelector(".slider--btn__prev"),
+                next: document.querySelector(".slider--btn__next")
+            };
+
+            if(loader) {
+                loader.style.opacity = 0;
+                loader.style.pointerEvents = "none";
+            }
+
+            slides.forEach((slide, i) => {
+                const slideInner = slide.querySelector(".slide__inner");
+                const slideInfoInner = slidesInfo[i].querySelector(".slide-info__inner");
+                tilt(slide, { target: [slideInner, slideInfoInner] });
+            });
+
+            if(buttons.prev) buttons.prev.addEventListener("click", change(-1));
+            if(buttons.next) buttons.next.addEventListener("click", change(1));
+        }
+
+        function setupSlider() {
+            const loaderText = document.querySelector(".slider-loader .loader__text");
+            const images = [...document.querySelectorAll(".slider-section img")];
+            if(images.length === 0) return;
+            
+            const totalImages = images.length;
+            let loadedImages = 0;
+            let progress = { current: 0, target: 0 };
+
+            images.forEach((image) => {
+                imagesLoaded(image, (instance) => {
+                    if (instance.isComplete) {
+                        loadedImages++;
+                        progress.target = loadedImages / totalImages;
+                    }
+                });
+            });
+
+            rafSlider.add(({ id }) => {
+                progress.current = lerp(progress.current, progress.target, 0.06);
+                const progressPercent = Math.round(progress.current * 100);
+                if(loaderText) loaderText.textContent = `${progressPercent}%`;
+
+                if (progressPercent >= 100) {
+                    initSlider();
+                    rafSlider.remove(id);
+                }
+            });
+        }
+
+        function change(direction) {
+            return () => {
+                let current = {
+                    slide: document.querySelector(".slide[data-current]"),
+                    slideInfo: document.querySelector(".slide-info[data-current]"),
+                    slideBg: document.querySelector(".slide__bg[data-current]")
+                };
+                let previous = {
+                    slide: document.querySelector(".slide[data-previous]"),
+                    slideInfo: document.querySelector(".slide-info[data-previous]"),
+                    slideBg: document.querySelector(".slide__bg[data-previous]")
+                };
+                let next = {
+                    slide: document.querySelector(".slide[data-next]"),
+                    slideInfo: document.querySelector(".slide-info[data-next]"),
+                    slideBg: document.querySelector(".slide__bg[data-next]")
+                };
+
+                Object.values(current).map((el) => el?.removeAttribute("data-current"));
+                Object.values(previous).map((el) => el?.removeAttribute("data-previous"));
+                Object.values(next).map((el) => el?.removeAttribute("data-next"));
+
+                if (direction === 1) {
+                    let temp = current; current = next; next = previous; previous = temp;
+                    current.slide.style.zIndex = "20"; previous.slide.style.zIndex = "30"; next.slide.style.zIndex = "10";
+                } else if (direction === -1) {
+                    let temp = current; current = previous; previous = next; next = temp;
+                    current.slide.style.zIndex = "20"; previous.slide.style.zIndex = "10"; next.slide.style.zIndex = "30";
+                }
+
+                Object.values(current).map((el) => el?.setAttribute("data-current", ""));
+                Object.values(previous).map((el) => el?.setAttribute("data-previous", ""));
+                Object.values(next).map((el) => el?.setAttribute("data-next", ""));
+            };
+        }
+
+        setupSlider();
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const preloader = document.getElementById('global-preloader');
+        if(!preloader) return;
+        const minTime = 2000;
+        const startTime = Date.now();
+        
+        const hidePreloader = () => {
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, minTime - elapsedTime);
+            setTimeout(() => {
+                preloader.classList.add('preloader-hidden');
+            }, remainingTime);
+        };
+
+        if (document.readyState === 'complete') {
+            hidePreloader();
+        } else {
+            window.addEventListener('load', hidePreloader);
+        }
+    });
+</script>
+</body>
+</html>

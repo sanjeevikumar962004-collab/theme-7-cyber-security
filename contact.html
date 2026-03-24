@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Stackly - Secure Communication</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Custom CSS (Inherited Base + Contact Specific) -->
+    <style>
+        :root {
+            /* Ultra Premium Palette */
+            --bg-color: #000000; 
+            --surface: #0a0a0a;
+            --surface-elevated: #121212;
+            
+            --accent-primary: #ffffff; 
+            --accent-secondary: #3b82f6; 
+            --accent-glow: #8b5cf6; 
+            
+            --text-white: #ffffff;
+            --text-black: #000000;
+            --text-gray-300: #e4e4e7;
+            --text-gray-400: #a1a1aa;
+            --text-gray-500: #71717a;
+            
+            /* High-end Glassmorphism */
+            --glass-bg: rgba(255, 255, 255, 0.015);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-border-hover: rgba(255, 255, 255, 0.15);
+            
+            /* Nav Backgrounds */
+            --nav-bg: rgba(0, 0, 0, 0.5);
+            --mobile-menu-bg: rgba(0, 0, 0, 0.98);
+
+            /* Footer Brand Colors */
+            --brand-huge-color-1: rgba(255, 255, 255, 0.02);
+            --brand-huge-color-2: rgba(255, 255, 255, 0.08);
+
+            /* Fonts */
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --transition-speed: 0.5s; 
+        }
+
+        /* Light Theme Override */
+        :root[data-theme="light"] {
+            --bg-color: #ffffff; 
+            --surface: #f4f4f5;
+            --surface-elevated: #e4e4e7;
+            
+            --text-white: #000000;
+            --text-black: #ffffff;
+            --text-gray-300: #52525b;
+            --text-gray-400: #71717a;
+            --text-gray-500: #a1a1aa;
+            
+            --glass-bg: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-border-hover: rgba(0, 0, 0, 0.2);
+
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --mobile-menu-bg: rgba(255, 255, 255, 0.98);
+
+            /* Footer Brand Colors Light Mode */
+            --brand-huge-color-1: rgba(0, 0, 0, 0.03);
+            --brand-huge-color-2: rgba(0, 0, 0, 0.09);
+        }
+
+        /* Reset & Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.03), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.03), transparent 40%);
+        }
+
+        ::selection { background-color: var(--text-white); color: var(--text-black); }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { background: none; border: none; cursor: pointer; font-family: inherit; }
+        img { max-width: 100%; display: block; }
+
+        .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+        /* Custom Cursor */
+        #cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background-color: #ffffff; 
+            border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+            mix-blend-mode: difference;
+        }
+        #cursor.hovered { width: 40px; height: 40px; background-color: #ffffff; mix-blend-mode: difference; }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 50; padding: 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--nav-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--glass-border); transition: all var(--transition-speed);
+        }
+        .nav-logo {
+            font-size: 1.25rem; font-weight: 800; color: var(--text-white);
+            letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 12px;
+        }
+        .nav-logo-icon { color: var(--text-white); width: 24px; height: 24px; }
+        .nav-links {
+            display: none; gap: 48px; font-size: 0.8rem; font-weight: 500;
+            color: var(--text-gray-400); letter-spacing: 1px; text-transform: uppercase;
+        }
+        .nav-links a { transition: color var(--transition-speed); position: relative; }
+        .nav-links a:hover { color: var(--text-white); }
+        .nav-actions { display: flex; align-items: center; gap: 24px; }
+        
+        .btn-primary {
+            display: none; background: transparent; color: var(--text-white);
+            padding: 12px 28px; border: 1px solid var(--glass-border); border-radius: 99px;
+            font-weight: 500; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;
+            transition: all var(--transition-speed);
+        }
+        .btn-primary:hover { background-color: var(--text-white); color: var(--text-black); border-color: var(--text-white); }
+        .mobile-menu-btn { display: block; color: var(--text-white); z-index: 51; position: relative; }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            position: fixed; inset: 0; background: var(--mobile-menu-bg); backdrop-filter: blur(24px);
+            z-index: 40; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        .mobile-menu.active { transform: translateY(0); }
+        .mobile-nav {
+            display: flex; flex-direction: column; gap: 40px; text-align: center;
+            font-size: 1.5rem; font-weight: 400; letter-spacing: 4px; text-transform: uppercase;
+        }
+        .mobile-nav a { color: var(--text-gray-500); transition: color 0.4s; }
+        .mobile-nav a:hover { color: var(--text-white); }
+
+        /* Theme Toggle Switch */
+        .theme-switch { font-size: 14px; position: relative; display: inline-block; width: 3.5em; height: 2em; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .theme-toggle-slider { position: absolute; cursor: pointer; inset: 0; border: 2px solid var(--text-gray-400); border-radius: 50px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .theme-toggle-slider:before { position: absolute; content: ""; height: 1.4em; width: 1.4em; left: 0.15em; bottom: 0.15em; background-color: var(--text-white); border-radius: inherit; transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1); }
+        .theme-switch input:checked + .theme-toggle-slider { box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); border: 2px solid var(--text-white); background-color: var(--text-white); }
+        .theme-switch input:checked + .theme-toggle-slider:before { transform: translateX(1.5em); background-color: var(--text-black); }
+
+        /* General UI Elements */
+        .section-padding { padding: 80px 0; position: relative; }
+        .section-header { margin-bottom: 40px; text-align: center; position: relative; z-index: 10; }
+        .section-header.left { text-align: left; }
+        
+        .subtitle {
+            font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
+            color: var(--text-gray-400); margin-bottom: 24px; letter-spacing: 4px;
+            text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 16px;
+        }
+        .section-header.left .subtitle { justify-content: flex-start; }
+        .subtitle::before, .subtitle::after { content: ''; display: block; width: 40px; height: 1px; background-color: var(--glass-border-hover); }
+        .section-header.left .subtitle::after { display: none; }
+
+        .title-main { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; color: var(--text-white); }
+        
+        .btn-solid {
+            padding: 16px 36px; background-color: var(--text-white); color: var(--text-black);
+            font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px; border-radius: 99px;
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+        }
+        .btn-solid:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15); }
+
+        /* Animations */
+        .reveal-up { opacity: 0; transform: translateY(40px); }
+
+        /* --- CONTACT PAGE SPECIFIC STYLES --- */
+
+        /* Contact Hero */
+        .contact-hero {
+            position: relative; min-height: 40vh; display: flex; align-items: center; justify-content: center;
+            padding-top: 140px; padding-bottom: 40px; overflow: hidden; text-align: center;
+        }
+        .contact-hero-content { position: relative; z-index: 10; max-width: 800px; }
+        .contact-hero-title { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 24px; line-height: 1.1; }
+        .contact-hero-desc { font-size: 1.1rem; color: var(--text-gray-400); font-weight: 300; line-height: 1.8; }
+
+        /* Contact Split Grid */
+        .contact-wrapper { display: grid; grid-template-columns: 1fr; gap: 60px; margin-top: 20px; }
+        
+        /* Left: Contact Info */
+        .contact-info-block { display: flex; flex-direction: column; gap: 24px; }
+        .info-item { 
+            display: flex; flex-direction: column; gap: 12px; background: var(--surface); 
+            border: 1px solid var(--glass-border); padding: 24px; border-radius: 4px; 
+            transition: all var(--transition-speed); 
+        }
+        .info-item:hover { 
+            border-color: var(--glass-border-hover); transform: translateY(-5px); 
+            background: var(--surface-elevated); box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+        }
+        .info-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-gray-500); text-transform: uppercase; letter-spacing: 2px; }
+        .info-value { font-size: 1.4rem; font-weight: 500; color: var(--text-white); transition: color var(--transition-speed); }
+        .info-value.link:hover { color: var(--accent-secondary); }
+        
+        .pgp-block { 
+            background: var(--surface); border: 1px solid var(--glass-border); padding: 24px; 
+            border-radius: 4px; transition: all var(--transition-speed);
+        }
+        .pgp-block:hover { 
+            border-color: var(--glass-border-hover); transform: translateY(-5px); 
+            background: var(--surface-elevated); box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+        }
+        .pgp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .pgp-key { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-gray-400); word-break: break-all; line-height: 1.6; background: var(--bg-color); padding: 16px; border-radius: 4px; border: 1px solid var(--glass-border-hover); }
+
+        /* Right: Contact Form */
+        .contact-form-wrapper { background: var(--surface); border: 1px solid var(--glass-border); padding: 40px 32px; border-radius: 4px; }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+        .form-group { position: relative; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--glass-border-hover);
+            padding: 16px 0; color: var(--text-white); font-family: var(--font-main); font-size: 1rem;
+            outline: none; transition: border-color 0.4s; border-radius: 0;
+        }
+        .form-select { appearance: none; cursor: pointer; color: var(--text-gray-400); }
+        .form-select option { background: var(--bg-color); color: var(--text-white); }
+        .form-textarea { resize: vertical; min-height: 120px; }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--text-white); }
+        .form-label {
+            position: absolute; top: 16px; left: 0; color: var(--text-gray-500); font-size: 1rem;
+            pointer-events: none; transition: all 0.3s ease;
+        }
+        /* Floating label effect */
+        .form-input:focus ~ .form-label, .form-input:not(:placeholder-shown) ~ .form-label,
+        .form-textarea:focus ~ .form-label, .form-textarea:not(:placeholder-shown) ~ .form-label {
+            top: -12px; font-size: 0.75rem; color: var(--text-gray-400); font-family: var(--font-mono); letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        /* Global Offices Section */
+        .offices-section { background: var(--bg-color); border-top: 1px solid var(--glass-border); }
+        .offices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-top: 60px; }
+        .office-card { background: var(--surface); border: 1px solid var(--glass-border); padding: 40px 32px; border-radius: 4px; transition: all var(--transition-speed); }
+        .office-card:hover { transform: translateY(-5px); border-color: var(--glass-border-hover); box-shadow: 0 10px 30px rgba(0,0,0,0.15); background: var(--surface-elevated); }
+        .office-city { font-size: 1.8rem; font-weight: 700; color: var(--text-white); margin-bottom: 8px; letter-spacing: -1px; }
+        .office-region { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-secondary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px; display: block; }
+        .office-address { color: var(--text-gray-400); font-weight: 300; line-height: 1.7; font-size: 0.95rem; }
+
+        /* Footer Inherited Styles */
+        .footer { background-color: var(--bg-color); border-top: 1px solid var(--glass-border); padding-top: 80px; padding-bottom: 20px; position: relative; overflow: hidden; }
+        .footer::before { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80%; height: 500px; background: radial-gradient(ellipse at bottom, rgba(59, 130, 246, 0.05) 0%, transparent 60%); pointer-events: none; z-index: 0; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 60px; position: relative; z-index: 1;}
+        .footer-col-desc { color: var(--text-gray-400); line-height: 1.8; margin-bottom: 40px; font-size: 0.95rem; font-weight: 300; max-width: 320px;}
+        .social-links { display: flex; gap: 16px; }
+        .social-btn { width: 48px; height: 48px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-weight: 400; transition: all var(--transition-speed); font-size: 0.8rem; color: var(--text-gray-400); border-radius: 50%; }
+        .social-btn:hover { border-color: var(--text-white); color: var(--text-black); background: var(--text-white); }
+        .footer-title { font-family: var(--font-mono); color: var(--text-gray-500); font-weight: 500; margin-bottom: 32px; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;}
+        .footer-links li { margin-bottom: 20px; }
+        .footer-links a { color: var(--text-gray-300); transition: color var(--transition-speed); font-size: 0.95rem; font-weight: 300;}
+        .footer-links a:hover { color: var(--text-white); padding-left: 5px; }
+        .newsletter-input { width: 100%; background-color: transparent; border: none; border-bottom: 1px solid var(--glass-border); padding: 16px 0; color: var(--text-white); outline: none; transition: border-color 0.4s; font-size: 0.95rem; margin-bottom: 24px; border-radius: 0;}
+        .newsletter-input:focus { border-color: var(--text-white); }
+        .btn-subscribe { background-color: transparent; color: var(--text-white); font-weight: 500; padding: 0; border: none; border-bottom: 1px solid transparent; transition: all 0.4s; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;}
+        .btn-subscribe:hover { border-color: var(--text-white); gap: 12px;}
+        .footer-bottom { border-top: 1px solid var(--glass-border); padding-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 24px; color: var(--text-gray-500); font-size: 0.8rem; text-align: center; font-weight: 300; position: relative; z-index: 1;}
+        .footer-legal { display: flex; gap: 32px; }
+        .footer-legal a:hover { color: var(--text-white); }
+        .footer-brand-huge {
+            font-size: 18vw; font-weight: 900; line-height: 0.8; text-align: center; letter-spacing: -0.05em; pointer-events: none; user-select: none;
+            margin-bottom: -40px; margin-top: 40px; position: relative; z-index: 1;
+            background: linear-gradient(to right, var(--brand-huge-color-1) 20%, var(--brand-huge-color-2) 50%, var(--brand-huge-color-1) 80%);
+            background-size: 200% auto; color: transparent; -webkit-background-clip: text;
+        }
+
+        /* Media Queries */
+        @media (min-width: 768px) {
+            .section-padding { padding: 120px 0; }
+            .section-header { margin-bottom: 60px; }
+            .nav-links { display: flex; }
+            .btn-primary { display: inline-flex; }
+            .mobile-menu-btn { display: none; }
+            
+            .title-main { font-size: 3.5rem; }
+            .contact-hero-title { font-size: 4.5rem; }
+
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .form-group.full-width { grid-column: span 2; }
+            .contact-form-wrapper { padding: 60px 48px; }
+
+            .footer { padding-top: 100px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 64px; margin-bottom: 80px; }
+            .footer-bottom { flex-direction: row; justify-content: space-between; text-align: left; }
+        }
+
+        @media (min-width: 1024px) {
+            .section-padding { padding: 140px 0; }
+            .title-main { font-size: 4rem; }
+            .contact-hero-title { font-size: 5.5rem; }
+            
+            .contact-wrapper { grid-template-columns: 1fr 1.4fr; gap: 100px; align-items: flex-start; }
+
+            .footer { padding-top: 120px; }
+            .footer-grid { grid-template-columns: 2fr 1fr 1.5fr; gap: 80px;}
+        }
+    </style>
+<style>
+/* Forcing the generic footer styles so that the newsletter and buttons render consistently everywhere */
+.footer-col .newsletter-form { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 500px; margin: 0 auto; }
+.footer-col .newsletter-input { 
+    width: 100%; padding: 14px 20px !important; background: rgba(255,255,255,0.03) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 4px !important; 
+    color: var(--text-white) !important; font-family: var(--font-main) !important; font-size: 0.9rem !important; 
+    outline: none !important; transition: border-color var(--transition-speed) !important; 
+}
+.footer-col .newsletter-input:focus { border-color: var(--text-white) !important; }
+.footer-col .btn-subscribe { 
+    display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; 
+    padding: 14px 24px !important; background: var(--text-white) !important; color: var(--text-black, #000) !important; 
+    border: none !important; border-radius: 4px !important; font-weight: 600 !important; font-size: 0.85rem !important; 
+    letter-spacing: 0.5px !important; cursor: pointer !important; transition: transform var(--transition-speed), box-shadow var(--transition-speed) !important; 
+}
+.footer-col .btn-subscribe:hover { transform: scale(1.02) !important; box-shadow: 0 10px 20px rgba(255,255,255,0.1) !important; }
+@media (min-width: 768px) {
+    .footer-col .newsletter-form { flex-direction: row; align-items: stretch; justify-content: flex-start; margin: 0; }
+    .footer-col .newsletter-input { margin-bottom: 0; }
+}
+</style>
+<style>:root[data-theme="light"] img[src="whitelogo.webp"] { filter: brightness(0); }</style>
+
+<style>
+/* PRELOADER STYLES */
+.preloader-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000000; z-index: 999999;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+.preloader-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.fingerprint-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  animation: flicker 3s infinite ease-in-out;
+  border-radius: 50%;
+}
+
+.fingerprint-svg {
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+  filter: drop-shadow(0 0 10px #ffffff);
+  transform: scale(1.1);
+  transition: transform 0.2s ease, filter 0.3s ease;
+}
+
+.fingerprint-path {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 0;
+  animation: draw 4s infinite linear;
+}
+
+.scan-line {
+  position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+  background: linear-gradient(to right, transparent, #ffffff, transparent);
+  animation: scan 1s infinite linear;
+  opacity: 0.7;
+}
+
+.matrix-rain {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  opacity: 0.5; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
+  overflow: hidden; border-radius: 50%;
+}
+
+.matrix-rain::before {
+  content: "101010 1100 0011 0101 1001 1110 0010 1101";
+  position: absolute; color: #ffffff; font-size: 14px; opacity: 0.2;
+  animation: rain 1.5s infinite linear;
+}
+
+.ripple1, .ripple2, .ripple3 {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  border-radius: 50%; border: 2px solid #ffffff; opacity: 0; transform: scale(0);
+}
+
+.glow {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  border-radius: 50%; box-shadow: 0 0 20px #ffffff; opacity: 0;
+}
+
+.status {
+  position: absolute; bottom: -30px; width: 100%; text-align: center;
+  color: #ffffff; font-size: 16px; opacity: 0.7; text-transform: uppercase;
+  letter-spacing: 2px; animation: glitch-text 2s infinite;
+}
+
+/* Animations */
+@keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } 75% { opacity: 0.95; } }
+@keyframes draw { 0% { stroke-dashoffset: 500; } 100% { stroke-dashoffset: 0; } }
+@keyframes scan { 0% { transform: translateY(0); opacity: 0.7; } 50% { opacity: 1; } 100% { transform: translateY(200px); opacity: 0.7; } }
+@keyframes rain { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+@keyframes glitch-text { 0% { transform: translate(0); } 20% { transform: translate(-1px, 1px); } 40% { transform: translate(1px, -1px); } 60% { transform: translate(-1px, 0); } 80% { transform: translate(1px, 0); } 100% { transform: translate(0); } }
+
+/* Light Mode Preloader Overrides */
+:root[data-theme="light"] .preloader-overlay { background: #ffffff; }
+:root[data-theme="light"] .fingerprint-svg { color: #000000; filter: drop-shadow(0 0 10px #000000); }
+:root[data-theme="light"] .scan-line { background: linear-gradient(to right, transparent, #000000, transparent); opacity: 0.4; }
+:root[data-theme="light"] .matrix-rain { background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent); }
+:root[data-theme="light"] .matrix-rain::before { color: #000000; }
+:root[data-theme="light"] .ripple1, :root[data-theme="light"] .ripple2, :root[data-theme="light"] .ripple3 { border: 2px solid #000000; }
+:root[data-theme="light"] .glow { box-shadow: 0 0 20px #000000; opacity: 0; }
+:root[data-theme="light"] .status { color: #000000; }
+</style>
+</head>
+
+<body>
+<div id="global-preloader" class="preloader-overlay">
+  <div class="fingerprint-container">
+    <svg viewBox="0 0 256 256" height="256" width="256" xmlns="http://www.w3.org/2000/svg" class="fingerprint-svg">
+      <path d="M126.42 24C70.73 24.85 25.21 70.09 24 125.81a103.53 103.53 0 0 0 13.52 53.54a4 4 0 0 0 7.1-.3a119.35 119.35 0 0 0 11.37-51A71.77 71.77 0 0 1 83 71.83a8 8 0 1 1 9.86 12.61A55.82 55.82 0 0 0 72 128.07a135.3 135.3 0 0 1-18.45 68.35a4 4 0 0 0 .61 4.85c2 2 4.09 4 6.25 5.82a4 4 0 0 0 6-1A151.2 151.2 0 0 0 85 158.49a8 8 0 1 1 15.68 3.19a167.3 167.3 0 0 1-21.07 53.64a4 4 0 0 0 1.6 5.63c2.47 1.25 5 2.41 7.57 3.47a4 4 0 0 0 5-1.61A183 183 0 0 0 120 128.28a8.16 8.16 0 0 1 7.44-8.21a8 8 0 0 1 8.56 8a198.94 198.94 0 0 1-25.21 97.16a4 4 0 0 0 2.95 5.92q4.55.63 9.21.86a4 4 0 0 0 3.67-2.1A214.9 214.9 0 0 0 152 128.8c.05-13.25-10.3-24.49-23.54-24.74A24 24 0 0 0 104 128a8.1 8.1 0 0 1-7.29 8a8 8 0 0 1-8.71-8a40 40 0 0 1 40.42-40c22 .23 39.68 19.17 39.57 41.16a231.4 231.4 0 0 1-20.52 94.57a4 4 0 0 0 4.62 5.51a104 104 0 0 0 10.26-3a4 4 0 0 0 2.35-2.22a244 244 0 0 0 11.48-34a8 8 0 1 1 15.5 4q-1.12 4.37-2.4 8.7a4 4 0 0 0 6.46 4.17A104 104 0 0 0 126.42 24M198 161.08a8 8 0 0 1-7.92 7a8 8 0 0 1-1-.06a8 8 0 0 1-6.95-8.93a253 253 0 0 0 1.92-31a56.08 56.08 0 0 0-56-56a57 57 0 0 0-7 .43a8 8 0 0 1-2-15.89a72.1 72.1 0 0 1 81 71.49a267 267 0 0 1-2.05 32.96" stroke-width="1" stroke="currentColor" fill="currentColor" class="fingerprint-path"></path>
+    </svg>
+    <div class="scan-line"></div>
+    <div class="matrix-rain"></div>
+    <div class="ripple1"></div>
+    <div class="ripple2"></div>
+    <div class="ripple3"></div>
+    <div class="glow"></div>
+    <div class="status">Loading...</div>
+  </div>
+</div>
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="nav-logo magnetic-elem">
+            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain; "></a>
+
+                <div class="nav-links">
+            <a href="index.html" class="magnetic-elem">Home</a>
+            <a href="about.html" class="magnetic-elem">About</a>
+            <a href="services.html" class="magnetic-elem">Services</a>
+            <a href="blog.html" class="magnetic-elem">Blog</a>
+            <a href="contact.html" class="magnetic-elem" style="color: var(--text-white);">Contact</a>
+        </div>
+
+        <div class="nav-actions">
+            <!-- Day/Night Toggle -->
+            <label class="theme-switch magnetic-elem">
+                <input type="checkbox" id="theme-toggle">
+                <span class="theme-toggle-slider"></span>
+            </label>
+
+            <button class="btn-primary magnetic-elem" onclick="window.location.href='login.html'">Login</button>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <line x1="4" y1="12" x2="20" y2="12"></line>
+                    <line x1="4" y1="6" x2="20" y2="6"></line>
+                    <line x1="4" y1="18" x2="20" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobile-menu">
+                <nav class="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html" style="color: var(--text-white); font-weight: 500; font-size: 1.2rem; margin-top: 40px; border-bottom: 1px solid var(--text-white); padding-bottom: 8px;">Login</a>
+        </nav>
+    </div>
+
+    <!-- Contact Hero Section -->
+    <section class="contact-hero">
+        <div class="container contact-hero-content">
+            <div id="hero-anim">
+                <h2 class="subtitle" style="justify-content: center; margin-bottom: 24px;">Secure Channel</h2>
+                <h1 class="contact-hero-title">
+                    Initiate <span style="color: var(--text-gray-400); font-style: italic; font-weight: 300;">Contact.</span>
+                </h1>
+                <p class="contact-hero-desc">
+                    Whether you require immediate incident response, an architecture audit, or enterprise deployment, our global team is ready to secure your perimeter.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Contact Split Section -->
+    <section class="section-padding" style="padding-top: 0;">
+        <div class="container">
+            <div class="contact-wrapper">
+                
+                <!-- Left: Direct Info -->
+                <div class="contact-info-block reveal-up">
+                    <div class="info-item magnetic-elem">
+                        <span class="info-label">Enterprise Sales</span>
+                        <a href="mailto:deploy@stackly.security" class="info-value link">deploy@stackly.security</a>
+                    </div>
+                    <div class="info-item magnetic-elem">
+                        <span class="info-label">Global Command Center (24/7)</span>
+                        <a href="tel:+18005550199" class="info-value link">+1 (800) 555-0199</a>
+                    </div>
+                    <div class="info-item magnetic-elem">
+                        <span class="info-label">Media & Press</span>
+                        <a href="mailto:media@stackly.security" class="info-value link">media@stackly.security</a>
+                    </div>
+
+                    <!-- Cyber PGP Block -->
+                    <div class="pgp-block magnetic-elem">
+                        <div class="pgp-header">
+                            <span class="info-label">Secure Transmission (PGP)</span>
+                            <svg width="20" height="20" fill="none" stroke="var(--text-gray-400)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <div class="pgp-key">
+                            -----BEGIN PGP PUBLIC KEY BLOCK-----<br>
+                            mQINBGB2c... [TRUNCATED FOR UI] ...<br>
+                            =Y7aX<br>
+                            -----END PGP PUBLIC KEY BLOCK-----
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Contact Form -->
+                <div class="contact-form-wrapper reveal-up" style="transition-delay: 0.1s;">
+                    <form onsubmit="event.preventDefault(); window.location.href='404.html';">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <input type="text" id="fname" class="form-input" placeholder=" " required>
+                                <label for="fname" class="form-label">First Name</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="lname" class="form-input" placeholder=" " required>
+                                <label for="lname" class="form-label">Last Name</label>
+                            </div>
+                            <div class="form-group full-width">
+                                <input type="email" id="email" class="form-input" placeholder=" " required>
+                                <label for="email" class="form-label">Work Email</label>
+                            </div>
+                            <div class="form-group full-width">
+                                <input type="text" id="company" class="form-input" placeholder=" ">
+                                <label for="company" class="form-label">Company / Organization</label>
+                            </div>
+                            <div class="form-group full-width">
+                                <select id="interest" class="form-select" required>
+                                    <option value="" disabled selected hidden>Select Area of Interest...</option>
+                                    <option value="sales">Enterprise Deployment</option>
+                                    <option value="audit">Architecture Audit</option>
+                                    <option value="redteam">Red Team / Pen-Testing</option>
+                                    <option value="incident">Emergency Incident Response</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <textarea id="message" class="form-textarea" placeholder=" " required></textarea>
+                                <label for="message" class="form-label">Secure Message</label>
+                            </div>
+                            <div class="form-group full-width">
+                                <button type="submit" class="btn-solid magnetic-elem" style="width: 100%; padding: 20px;">
+                                    Transmit Signal
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Global Offices Grid -->
+    <section class="section-padding offices-section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="subtitle">Global Presence</h2>
+                <h3 class="title-main">Command Centers.</h3>
+            </div>
+
+            <div class="offices-grid">
+                <!-- Office 1 -->
+                <div class="office-card reveal-up magnetic-elem">
+                    <h4 class="office-city">San Francisco</h4>
+                    <span class="office-region">Global Headquarters (AMER)</span>
+                    <p class="office-address">
+                        100 Cyber Integration Way<br>
+                        Suite 4000<br>
+                        San Francisco, CA 94105<br>
+                        United States
+                    </p>
+                </div>
+
+                <!-- Office 2 -->
+                <div class="office-card reveal-up magnetic-elem" style="transition-delay: 0.1s;">
+                    <h4 class="office-city">London</h4>
+                    <span class="office-region">EMEA Operations</span>
+                    <p class="office-address">
+                        The Shard, Level 24<br>
+                        32 London Bridge St<br>
+                        London SE1 9SG<br>
+                        United Kingdom
+                    </p>
+                </div>
+
+                <!-- Office 3 -->
+                <div class="office-card reveal-up magnetic-elem" style="transition-delay: 0.2s;">
+                    <h4 class="office-city">Singapore</h4>
+                    <span class="office-region">APAC Threat Intel</span>
+                    <p class="office-address">
+                        Marina Bay Financial Centre<br>
+                        Tower 3, Level 15<br>
+                        12 Marina Blvd<br>
+                        Singapore 018982
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Animated Premium Footer -->
+    <footer class="footer" id="footer-section">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Col 1 -->
+                <div class="footer-col">
+                    <a href="index.html" class="nav-logo" style="margin-bottom: 32px; display: block;"><img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain;"></a>
+                    <p class="footer-col-desc">
+                        Engineering unbreakable digital perimeters for forward-thinking enterprises. Secure your future with confidence.
+                    </p>
+                    <div class="social-links">
+                        <a href="404.html" class="social-btn">IG</a>
+                        <a href="404.html" class="social-btn">X</a>
+                        <a href="404.html" class="social-btn">IN</a>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Quick Links</h4>
+                                        <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Emergency Response</h4>
+                    <p class="footer-col-desc" style="margin-bottom: 12px; font-size: 0.85rem;">Under active attack? Get immediate assistance from our incident response team.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); window.location.href='404.html';">
+                        <input type="email" placeholder="Work Email Address" class="newsletter-input" required>
+                        <button class="btn-subscribe">Request Backup <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Stackly Cybersecurity Systems. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="404.html">Privacy Protocol</a>
+                    <a href="404.html">Terms of Service</a>
+                    <a href="404.html">Vulnerability Disclosure</a>
+                </div>
+            </div>
+            
+        </div>
+        <!-- Huge Animated Brand Text -->
+        
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Clean Cursor & Magnetic Elements
+        const initCursor = () => {
+            const cursor = document.getElementById('cursor');
+            const magneticBtns = document.querySelectorAll('.magnetic-elem, a, button, .pgp-block, .office-card');
+
+            document.addEventListener('mousemove', (e) => {
+                gsap.to(cursor, {
+                    x: e.clientX,
+                    y: e.clientY,
+                    duration: 0.15,
+                    ease: "power2.out"
+                });
+            });
+
+            magneticBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                btn.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+                
+                if(btn.classList.contains('magnetic-elem')){
+                    btn.addEventListener('mousemove', (e) => {
+                        const rect = btn.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+
+                        gsap.to(btn, {
+                            x: x * 0.1, 
+                            y: y * 0.1,
+                            duration: 0.4,
+                            ease: "power2.out"
+                        });
+                    });
+
+                    btn.addEventListener('mouseleave', () => {
+                        gsap.to(btn, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" });
+                    });
+                }
+            });
+        };
+
+        // General GSAP Scroll Animations
+        const initAnimations = () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero Load Animation
+            gsap.from("#hero-anim > *", {
+                y: 50,
+                opacity: 0,
+                duration: 1.2,
+                stagger: 0.2,
+                ease: "power3.out",
+                delay: 0.1
+            });
+
+            // Universal Reveal Elements
+            gsap.utils.toArray('.reveal-up').forEach((elem) => {
+                gsap.to(elem, {
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%",
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+            });
+        };
+
+        // Mobile Menu Logic
+        const initMobileMenu = () => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const links = document.querySelectorAll('.mobile-nav a');
+
+            if (!btn || !menu) return;
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('active');
+                const isOpen = menu.classList.contains('active');
+                btn.innerHTML = isOpen
+                    ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'
+                    : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>';
+            });
+
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.remove('active');
+                    btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>';
+                });
+            });
+        };
+
+        // Theme Toggle
+        const initThemeToggle = () => {
+            const toggle = document.getElementById('theme-toggle');
+            if (!toggle) return;
+
+            // Check system preference or localStorage
+            const savedTheme = localStorage.getItem('stackly-theme');
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                toggle.checked = true;
+            }
+
+            toggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('stackly-theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('stackly-theme', 'dark');
+                }
+            });
+        };
+
+        // Init All
+        document.addEventListener('DOMContentLoaded', () => {
+            initThemeToggle();
+            initCursor();
+            initAnimations();
+            initMobileMenu();
+        });
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const preloader = document.getElementById('global-preloader');
+        if(!preloader) return;
+        const minTime = 2000;
+        const startTime = Date.now();
+        
+        const hidePreloader = () => {
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, minTime - elapsedTime);
+            setTimeout(() => {
+                preloader.classList.add('preloader-hidden');
+            }, remainingTime);
+        };
+
+        if (document.readyState === 'complete') {
+            hidePreloader();
+        } else {
+            window.addEventListener('load', hidePreloader);
+        }
+    });
+</script>
+</body>
+</html>
