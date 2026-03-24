@@ -279,8 +279,15 @@
                 return;
             }
             
-            // Validated, navigate to 404
-            window.location.href = '404.html';
+            // Validated, check role and navigate to dashboard
+            const role = document.getElementById('role').value;
+            if(role === 'admin') {
+                window.location.href = 'admin dasboard.html';
+            } else if(role === 'user') {
+                window.location.href = 'userdashboard.html';
+            } else {
+                window.location.href = '404.html';
+            }
         });
 
         document.getElementById('confirm').addEventListener('input', function() {
