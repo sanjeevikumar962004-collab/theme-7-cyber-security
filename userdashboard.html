@@ -137,6 +137,42 @@
 <style>:root[data-theme="light"] img[src="whitelogo.webp"] { filter: brightness(0); }</style>
 
 <style>
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 28px;
+            color: var(--text-dim);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item svg {
+            margin-right: 14px;
+            width: 18px;
+            height: 18px;
+            stroke-width: 1.5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover { color: #ffffff; }
+        .nav-item:hover svg { transform: translateX(2px); color: var(--accent-cyan); }
+        .nav-item.active { color: #ffffff; }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25%;
+            height: 50%;
+            width: 2px;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+        .nav-item.active svg { color: var(--accent-cyan); filter: drop-shadow(0 0 5px rgba(0, 242, 255, 0.5)); }
+
 /* PRELOADER STYLES */
 .preloader-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -240,28 +276,49 @@
 
     <div id="mobile-overlay" class="fixed inset-0 z-30 lg:hidden"></div>
 
-    <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 w-64 flex flex-col p-6 space-y-8 z-40 -translate-x-full lg:translate-x-0 lg:static">
-        <div class="flex items-center justify-between">
-            <a href="index.html" class="flex justify-center w-full">
+        <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 flex flex-col z-40 -translate-x-full lg:translate-x-0 lg:static">
+        <div class="pt-10 pb-12 px-8">
+            <a href="index.html" class="flex items-center justify-center w-full mt-4 mb-4">
                 <img src="whitelogo.webp" alt="Logo" style="width: 160px; height: auto; object-fit: contain;">
             </a>
-            <button id="close-menu" class="lg:hidden text-gray-400 hover:text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
         </div>
 
-        <nav class="flex-1 space-y-2 text-xs font-semibold uppercase tracking-wider">
-            <div class="px-4 py-3 bg-white/5 text-white border-l-2 border-cyan-400 cursor-pointer" onclick="window.location.href='index.html'">Home</div>
-            <div class="px-4 py-3 text-gray-500 hover:text-white hover:bg-white/5 transition cursor-pointer" onclick="window.location.href='404.html'">Processes</div>
-            <div class="px-4 py-3 text-gray-500 hover:text-white hover:bg-white/5 transition cursor-pointer" onclick="window.location.href='404.html'">Tools</div>
-            <div class="px-4 py-3 text-gray-500 hover:text-white hover:bg-white/5 transition cursor-pointer" onclick="window.location.href='404.html'">Coverage</div>
-            <div class="px-4 py-3 text-gray-500 hover:text-white hover:bg-white/5 transition cursor-pointer" onclick="window.location.href='404.html'">Compliance</div>
+        <nav class="flex-1 space-y-1">
+            <div class="nav-item active" onclick="window.location.href='404.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                Home
+            </div>
+            <div class="nav-item" onclick="window.location.href='404.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                Processes
+            </div>
+            <div class="nav-item" onclick="window.location.href='404.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                Tools
+            </div>
+            <div class="nav-item" onclick="window.location.href='404.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                Coverage
+            </div>
+            <div class="nav-item" onclick="window.location.href='404.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                Compliance
+            </div>
+            <div class="h-8"></div>
+            <div class="nav-item text-red-500 hover:bg-red-500/10 hover:text-red-400" onclick="window.location.href='index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                Logout
+            </div>
         </nav>
 
-        <div class="p-4 bg-gray-900/50 rounded-lg text-[10px] text-gray-500 mt-auto">
-            <div class="flex justify-between mb-2"><span>OPERATOR</span><span id="user-email-display" class="text-cyan-400" style="text-transform: lowercase;">UNKNOWN</span></div>
-            <div class="flex justify-between mb-2"><span>VERSION</span><span>V2.4.0</span></div>
-            <div class="flex justify-between"><span>STATUS</span><span class="text-green-400 uppercase">Secure</span></div>
+        <div class="p-8 border-t border-white/5">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex flex-col">
+                    <span class="text-[8px] text-gray-500 font-bold uppercase tracking-widest text-nowrap">Operator</span>
+                    <span id="user-email-display" class="text-[10px] text-cyan-400 font-medium font-orbitron uppercase" style="text-transform: lowercase;">UNKNOWN</span>
+                </div>
+                <div class="w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_5px_#00f2ff]"></div>
+            </div>
         </div>
     </aside>
 
@@ -323,7 +380,7 @@
                         </svg>
                         
                         <div class="absolute text-center">
-                            <div class="text-5xl md:text-8xl font-orbitron font-bold counter" data-target="73">0</div>
+                            <div id="healthPercentage" class="text-5xl md:text-8xl font-orbitron font-bold">0</div>
                             <div class="text-[8px] md:text-[10px] text-gray-400 mt-2 tracking-[0.3em] font-semibold uppercase">Security Score</div>
                         </div>
 
@@ -402,7 +459,7 @@
                     </div>
                     <h3 class="text-lg md:text-xl font-orbitron font-bold mb-2 md:mb-4 uppercase tracking-tighter">Critical Attention</h3>
                     <p class="text-[10px] md:text-xs text-gray-400 px-4 md:px-8 leading-relaxed mb-6">Immediate action required on 3 network anomalies and unauthorized attempts.</p>
-                    <button class="w-full md:w-auto px-8 py-3 bg-red-500/10 border border-red-500 text-red-500 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all shadow-md">View Details</button>
+                    <button onclick="window.location.href='404.html'" class="w-full md:w-auto px-8 py-3 bg-red-500/10 border border-red-500 text-red-500 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all shadow-md">View Details</button>
                 </div>
 
                 <div class="bg-panel-bg/40 p-5 md:p-6 rounded-3xl border border-white/5">
@@ -452,7 +509,7 @@
                     <span class="text-gray-500 text-[8px] md:text-[10px] uppercase font-bold tracking-widest mb-1">Anomalies</span>
                     <div class="text-lg md:text-2xl font-orbitron font-bold text-red-400">04</div>
                 </div>
-                <div class="stat-card p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center shadow-lg">
+                                <div class="stat-card p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center shadow-lg">
                     <span class="text-gray-500 text-[8px] md:text-[10px] uppercase font-bold tracking-widest mb-2">Sys Health</span>
                     <div class="flex items-center space-x-2">
                         <div class="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]"></div>
@@ -474,13 +531,13 @@
             const overlay = document.getElementById('mobile-overlay');
 
             const toggleMenu = () => {
-                sidebar.classList.toggle('-translate-x-full');
-                overlay.classList.toggle('active');
+                if (sidebar) sidebar.classList.toggle('-translate-x-full');
+                if (overlay) overlay.classList.toggle('active');
             };
 
-            openBtn.addEventListener('click', toggleMenu);
-            closeBtn.addEventListener('click', toggleMenu);
-            overlay.addEventListener('click', toggleMenu);
+            if (openBtn) openBtn.addEventListener('click', toggleMenu);
+            if (closeBtn) closeBtn.addEventListener('click', toggleMenu);
+            if (overlay) overlay.addEventListener('click', toggleMenu);
 
             const counters = document.querySelectorAll('.counter');
             counters.forEach(counter => {
@@ -501,17 +558,55 @@
                 updateCount();
             });
 
-            const mainGauge = document.getElementById('mainGauge');
-            const targetScore = 73;
-            const radius = 160;
-            const circumference = 2 * Math.PI * radius;
-            const offset = circumference - (targetScore / 100) * circumference;
-            
-            setTimeout(() => {
-                mainGauge.style.strokeDashoffset = offset;
-            }, 500);
+                        // FIXED GAUGE ANIMATION: Loading forward from 0 to target
+            const animateGauge = () => {
+                const mainGauge = document.getElementById('mainGauge');
+                const healthText = document.getElementById('healthPercentage');
+                if (!mainGauge) return;
+                
+                const targetValue = 73;
+                const radius = 160;
+                const circumference = 2 * Math.PI * radius;
+                
+                // Initialize as empty
+                mainGauge.style.strokeDasharray = `${circumference} ${circumference}`;
+                mainGauge.style.strokeDashoffset = circumference;
+                
+                const finalOffset = circumference - (targetValue / 100) * circumference;
+                
+                // Animate text counter synced with ring
+                let currentVal = 0;
+                const duration = 2500; // Match CSS transition
+                const startTime = performance.now();
 
-            // REFINED: Connectivity Logic for Pixel-Perfect Alignment
+                const updateText = (timestamp) => {
+                    const elapsed = timestamp - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // Easing function (easeOutCubic)
+                    const easedProgress = 1 - Math.pow(1 - progress, 3);
+                    
+                    currentVal = Math.floor(easedProgress * targetValue);
+                    if(healthText) healthText.innerText = currentVal;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(updateText);
+                    } else {
+                        if(healthText) healthText.innerText = targetValue;
+                    }
+                };
+
+                // Trigger animations
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        mainGauge.style.strokeDashoffset = finalOffset;
+                        requestAnimationFrame(updateText);
+                    }, 100);
+                });
+            };
+            
+            animateGauge();
+
+            // Connectivity Lines
             const drawConnections = () => {
                 const svg = document.getElementById('connectionContainer');
                 const gaugeContainer = document.getElementById('gaugeContainer');
@@ -523,29 +618,19 @@
                 
                 svg.innerHTML = ''; 
 
-                // EXACT RADIUS CALCULATION
-                // Gauge viewBox is 400x400. Circle radius is 160.
-                // Ring edge is at 200 + 160 = 360 units. 
-                // That is 360/400 = 90% of the container width.
-                const startX = gaugeRect.left + (gaugeRect.width * 0.9) - containerRect.left;
+                const startX = gaugeRect.left + (gaugeRect.width * 0.88) - containerRect.left;
                 const centerY = (gaugeRect.top + gaugeRect.bottom) / 2 - containerRect.top;
 
                 nodes.forEach((node, index) => {
                     const rect = node.getBoundingClientRect();
-                    
-                    // Destination Point
                     const endX = (rect.left - containerRect.left) + 20;
                     const endY = (rect.top + rect.bottom) / 2 - containerRect.top;
-
-                    // Stagger the origin Y slightly for a "fan" effect matching the original image
-                    const originYOffset = (index - 2) * 4; 
+                    
+                    const originYOffset = (index - 1) * 15; 
                     const startY = centerY + originYOffset;
 
                     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
                     const color = node.getAttribute('data-color') === 'red' ? '#ff4b5c' : '#61fcc3';
-                    
-                    // Precision Bezier Curve
-                    // Use a slightly larger mid-point to make curves more elegant
                     const midX = startX + (endX - startX) * 0.45;
                     const d = `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`;
                     
@@ -554,37 +639,21 @@
                     path.setAttribute("stroke", color);
                     path.setAttribute("stroke-width", "1.5");
                     path.setAttribute("class", "connecting-line");
-                    path.style.animationDelay = `${index * 0.08}s`;
-                    
+                    path.style.animationDelay = `${index * 0.1}s`;
                     svg.appendChild(path);
 
-                    // Origin Dot
-                    const originCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    originCircle.setAttribute("cx", startX);
-                    originCircle.setAttribute("cy", startY);
-                    originCircle.setAttribute("r", "2");
-                    originCircle.setAttribute("fill", "white");
-                    originCircle.style.opacity = "0.5";
-                    svg.appendChild(originCircle);
-
-                    // Terminal Dot
-                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    circle.setAttribute("cx", endX - 10);
-                    circle.setAttribute("cy", endY);
-                    circle.setAttribute("r", "2.5");
-                    circle.setAttribute("fill", color);
-                    circle.setAttribute("class", "node-pulse");
-                    svg.appendChild(circle);
+                    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    dot.setAttribute("cx", endX - 10);
+                    dot.setAttribute("cy", endY);
+                    dot.setAttribute("r", "2.5");
+                    dot.setAttribute("fill", color);
+                    dot.setAttribute("class", "node-pulse");
+                    svg.appendChild(dot);
                 });
             };
 
-            let resizeTimer;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(drawConnections, 100);
-            });
-
-            setTimeout(drawConnections, 850);
+            window.addEventListener('resize', drawConnections);
+            setTimeout(drawConnections, 950);
 
             setTimeout(() => {
                 const bar = document.getElementById('coverageBar');
