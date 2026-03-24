@@ -251,7 +251,7 @@
 
         /* Newsletter Minimal Section */
         .newsletter-minimal { background: var(--bg-color); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 100px 0; text-align: center; }
-        .newsletter-minimal .newsletter-input { max-width: 400px; margin: 0 auto 32px auto; font-size: 1.2rem; text-align: center; }
+        .newsletter-minimal .newsletter-input { width: 100%; max-width: 400px; margin: 0 auto; font-size: 1.2rem; text-align: left; }
 
         /* Footer Inherited Styles */
         .footer { background-color: var(--bg-color); padding-top: 80px; padding-bottom: 20px; position: relative; overflow: hidden; }
@@ -460,7 +460,7 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <a href="index.html" class="nav-logo magnetic-elem">
-            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain; "></a>
+            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 130px; height: auto; object-fit: contain; "></a>
 
                 <div class="nav-links">
             <a href="index.html" class="magnetic-elem">Home</a>
@@ -588,7 +588,7 @@
                         <h4 class="blog-card-title">Why VPNs Are Dead: The Shift to Identity-Based Access</h4>
                         <p class="blog-card-excerpt">Legacy VPNs grant excessive trust. Discover why micro-segmentation and continuous identity verification are the new standard for remote infrastructure access.</p>
                         <div class="blog-card-footer">
-                            <span class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+                            <button onclick="window.location.href='404.html'" style="background:none;border:none;padding:0;cursor:pointer;" class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
                             <span class="post-meta" style="margin:0;">5 min</span>
                         </div>
                     </div>
@@ -608,7 +608,7 @@
                         <h4 class="blog-card-title">Anatomy of a Phishing Simulation: Lessons from the Financial Sector</h4>
                         <p class="blog-card-excerpt">A breakdown of our latest social engineering campaign targeting a global bank, highlighting the human element in infrastructure vulnerabilities.</p>
                         <div class="blog-card-footer">
-                            <span class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+                            <button onclick="window.location.href='404.html'" style="background:none;border:none;padding:0;cursor:pointer;" class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
                             <span class="post-meta" style="margin:0;">12 min</span>
                         </div>
                     </div>
@@ -628,7 +628,7 @@
                         <h4 class="blog-card-title">Scaling Threat Detection: How We Process 5B Events Daily</h4>
                         <p class="blog-card-excerpt">An under-the-hood look at Stackly's data pipeline. Learn how our infrastructure ingests, analyzes, and actions global threat data with sub-millisecond latency.</p>
                         <div class="blog-card-footer">
-                            <span class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+                            <button onclick="window.location.href='404.html'" style="background:none;border:none;padding:0;cursor:pointer;" class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
                             <span class="post-meta" style="margin:0;">9 min</span>
                         </div>
                     </div>
@@ -648,7 +648,7 @@
                         <h4 class="blog-card-title">Securing Kubernetes Clusters Against Container Escapes</h4>
                         <p class="blog-card-excerpt">Best practices for deploying eBPF-based security monitoring within cloud-native environments to prevent lateral movement.</p>
                         <div class="blog-card-footer">
-                            <span class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+                            <button onclick="window.location.href='404.html'" style="background:none;border:none;padding:0;cursor:pointer;" class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
                             <span class="post-meta" style="margin:0;">6 min</span>
                         </div>
                     </div>
@@ -668,7 +668,7 @@
                         <h4 class="blog-card-title">Stackly Recognized as Leader in Zero-Trust Edge</h4>
                         <p class="blog-card-excerpt">We are proud to announce our placement in the top right quadrant of the 2026 Global Cyber Defense Report.</p>
                         <div class="blog-card-footer">
-                            <span class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+                            <button onclick="window.location.href='404.html'" style="background:none;border:none;padding:0;cursor:pointer;" class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
                             <span class="post-meta" style="margin:0;">3 min</span>
                         </div>
                     </div>
@@ -688,7 +688,7 @@
                         <h4 class="blog-card-title">Machine Learning in Autonomous Incident Response</h4>
                         <p class="blog-card-excerpt">Exploring the transition from manual SOC playbooks to fully autonomous, AI-driven mitigation protocols during active breaches.</p>
                         <div class="blog-card-footer">
-                            <span class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+                            <button onclick="window.location.href='404.html'" style="background:none;border:none;padding:0;cursor:pointer;" class="read-more">Read Article <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
                             <span class="post-meta" style="margin:0;">7 min</span>
                         </div>
                     </div>
@@ -709,7 +709,6 @@
             <p class="hero-desc" style="margin: 0 auto 40px auto;">Get our latest research, zero-day alerts, and architectural insights delivered directly to your inbox weekly.</p>
             <form class="newsletter-form" onsubmit="event.preventDefault(); window.location.href='404.html';">
                 <input type="email" placeholder="Enter your work email" class="newsletter-input" required>
-                <br>
                 <button class="btn-solid magnetic-elem">
                     Subscribe to Briefings
                 </button>
@@ -723,7 +722,7 @@
             <div class="footer-grid">
                 <!-- Col 1 -->
                 <div class="footer-col">
-                    <a href="index.html" class="nav-logo" style="margin-bottom: 32px; display: block;"><img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain;"></a>
+                    <a href="index.html" class="nav-logo" style="margin-bottom: 32px; display: block;"><img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 130px; height: auto; object-fit: contain;"></a>
                     <p class="footer-col-desc">
                         Engineering unbreakable digital perimeters for forward-thinking enterprises. Secure your future with confidence.
                     </p>

@@ -466,7 +466,7 @@
             display: flex; align-items: center; gap: 12px; background: var(--surface-elevated);
             border: 1px solid var(--glass-border); padding: 16px 32px; border-radius: 99px;
             font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-gray-300);
-            text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: all var(--transition-speed);
+            text-transform: uppercase; letter-spacing: 1px; white-space: normal; line-height: 1.1; transition: all var(--transition-speed);
         }
         .integration-pill:hover { border-color: var(--text-white); color: var(--text-white); background: rgba(255,255,255,0.05); transform: translateY(-2px); }
 
@@ -739,17 +739,17 @@
         }
 
         .slide-info--text span {
-            display: block; white-space: nowrap;
+            display: block; white-space: normal; line-height: 1.1;
             transition: var(--slide-transition-duration) var(--slide-transition-easing);
             transition-property: opacity, transform;
         }
 
         .slide-info--text[data-title], .slide-info--text[data-subtitle] {
-            font-size: clamp(1.5rem, 6vw, 2.4rem); font-weight: 800; letter-spacing: 2px;
-            white-space: nowrap; text-transform: uppercase;
+            font-size: clamp(1.2rem, 5vw, 2.4rem); font-weight: 800; letter-spacing: 2px;
+            white-space: normal; line-height: 1.1; text-transform: uppercase;
         }
         .slide-info--text[data-subtitle] {
-            margin-left: 10px; font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 600; color: var(--accent-secondary);
+            margin-left: 10px; font-size: clamp(1rem, 4vw, 1.8rem); font-weight: 600; color: var(--accent-secondary);
         }
         .slide-info--text[data-description] {
             margin-left: 5px; font-size: clamp(0.8rem, 2.5vw, 0.95rem); font-family: var(--font-mono); font-weight: 400; color: var(--text-gray-400); margin-top: 12px; letter-spacing: 1px;
@@ -1045,7 +1045,7 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <a href="index.html" class="nav-logo magnetic-elem">
-            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain; "></a>
+            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 130px; height: auto; object-fit: contain; "></a>
 
         <div class="nav-links">
             <a href="index.html" class="magnetic-elem" style="color: var(--text-white);">Home</a>
@@ -1185,7 +1185,7 @@
     </section>
 
 
-       <section class="slider-section reveal-up">
+    <section class="slider-section reveal-up">
         <div class="container" style="position: absolute; top: 12%; z-index: 10;">
             <div class="section-header" style="margin-bottom: 0;">
                 <h2 class="subtitle">Core Infrastructure</h2>
@@ -1205,51 +1205,31 @@
                     <div class="slide" data-current>
                         <div class="slide__inner">
                             <div class="slide--image__wrapper">
-                                <img class="slide--image" src="images/pexels-cottonbro-5483248.webp" alt="Core Network Server Room" />
+                                <img class="slide--image" src="images/pexels-julio-lopez-75309646-34258666.webp" alt="Core Network Server Room" />
                             </div>
                         </div>
                     </div>
-                    <div class="slide__bg" style="--bg: url(images/pexels-shkrabaanthony-5475752.webp); --dir: 0" data-current></div>
+                    <div class="slide__bg" style="--bg: url(images/pexels-julio-lopez-75309646-34258666.webp); --dir: 0" data-current></div>
 
                     <!-- slide 2 -->
                     <div class="slide" data-next>
                         <div class="slide__inner">
                             <div class="slide--image__wrapper">
-                                <img class="slide--image" src="images/pexels-julio-lopez-75309646-34258666.webp" alt="Matrix Cyber Code" />
+                                <img class="slide--image" src="images/pexels-sora-shimazaki-5935794.webp" alt="Matrix Cyber Code" />
                             </div>
                         </div>
                     </div>
-                    <div class="slide__bg" style="--bg: url(images/pexels-shkrabaanthony-5475752.webp); --dir: 1" data-next></div>
+                    <div class="slide__bg" style="--bg: url(images/pexels-mati-6330644.webp); --dir: 1" data-next></div>
 
                     <!-- slide 3 -->
-                    <div class="slide">
+                    <div class="slide" data-previous>
                         <div class="slide__inner">
                             <div class="slide--image__wrapper">
                                 <img class="slide--image" src="images/pexels-mati-6330644.webp" alt="Cyber Security Lock" />
                             </div>
                         </div>
                     </div>
-                    <div class="slide__bg" style="--bg: url(images/pexels-shkrabaanthony-5475752.webp);"></div>
-
-                    <!-- slide 4 -->
-                    <div class="slide">
-                        <div class="slide__inner">
-                            <div class="slide--image__wrapper">
-                                <img class="slide--image" src="images/pexels-jibarofoto-3695354.webp" alt="Cloud Posture" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide__bg" style="--bg: url(images/pexels-cottonbro-5483248.webp);"></div>
-
-                    <!-- slide 5 -->
-                    <div class="slide" data-previous>
-                        <div class="slide__inner">
-                            <div class="slide--image__wrapper">
-                                <img class="slide--image" src="images/pexels-sora-shimazaki-5935794.webp" alt="API Defense" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide__bg" style="--bg: url(images/pexels-cottonbro-5483248.webp);" data-previous></div>
+                    <div class="slide__bg" style="--bg: url(images/pexels-sora-shimazaki-5935794.webp); --dir: -1" data-previous></div>
                 </div>
                 <div class="slides--infos">
                     <!-- Slide Info 1 -->
@@ -1287,7 +1267,7 @@
                     </div>
 
                     <!-- Slide Info 3 -->
-                    <div class="slide-info">
+                    <div class="slide-info" data-previous>
                         <div class="slide-info__inner">
                             <div class="slide-info--text__wrapper">
                                 <div data-title class="slide-info--text">
@@ -1298,40 +1278,6 @@
                                 </div>
                                 <div data-description class="slide-info--text">
                                     <span>24/7 proactive incident response</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide Info 4 -->
-                    <div class="slide-info">
-                        <div class="slide-info__inner">
-                            <div class="slide-info--text__wrapper">
-                                <div data-title class="slide-info--text">
-                                    <span>Cloud Posture</span>
-                                </div>
-                                <div data-subtitle class="slide-info--text">
-                                    <span>Automated Auditing</span>
-                                </div>
-                                <div data-description class="slide-info--text">
-                                    <span>Continuous compliance monitoring</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide Info 5 -->
-                    <div class="slide-info" data-previous>
-                        <div class="slide-info__inner">
-                            <div class="slide-info--text__wrapper">
-                                <div data-title class="slide-info--text">
-                                    <span>API Defense</span>
-                                </div>
-                                <div data-subtitle class="slide-info--text">
-                                    <span>Gateway Security</span>
-                                </div>
-                                <div data-description class="slide-info--text">
-                                    <span>Rate limiting and payload inspection</span>
                                 </div>
                             </div>
                         </div>
@@ -1575,7 +1521,7 @@
             <div class="footer-grid">
                 <!-- Col 1 -->
                 <div class="footer-col">
-                    <a href="index.html" class="nav-logo" style="margin-bottom: 32px; display: block;"><img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain;"></a>
+                    <a href="index.html" class="nav-logo" style="margin-bottom: 32px; display: block;"><img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 130px; height: auto; object-fit: contain;"></a>
                     <p class="footer-col-desc">
                         Engineering unbreakable digital perimeters for forward-thinking enterprises. Secure your future with confidence.
                     </p>

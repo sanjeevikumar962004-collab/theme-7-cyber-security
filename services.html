@@ -202,7 +202,7 @@
             background: linear-gradient(to bottom, transparent, var(--surface));
         }
         .services-hero-content { position: relative; z-index: 10; max-width: 800px; }
-        .services-hero-title { font-size: 4rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 24px; line-height: 1.1; }
+        .services-hero-title { font-size: clamp(2.5rem, 10vw, 4rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 24px; line-height: 1.1; }
         .services-hero-desc { font-size: 1.1rem; color: var(--text-gray-400); font-weight: 300; line-height: 1.8; }
 
         /* Alternating Service Rows */
@@ -422,17 +422,17 @@
         }
 
         .slide-info--text span {
-            display: block; white-space: nowrap;
+            display: block; white-space: normal; line-height: 1.1;
             transition: var(--slide-transition-duration) var(--slide-transition-easing);
             transition-property: opacity, transform;
         }
 
         .slide-info--text[data-title], .slide-info--text[data-subtitle] {
-            font-size: clamp(1.5rem, 6vw, 2.4rem); font-weight: 800; letter-spacing: 2px;
-            white-space: nowrap; text-transform: uppercase;
+            font-size: clamp(1.2rem, 5vw, 2.4rem); font-weight: 800; letter-spacing: 2px;
+            white-space: normal; line-height: 1.1; text-transform: uppercase;
         }
         .slide-info--text[data-subtitle] {
-            margin-left: 10px; font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 600; color: var(--accent-secondary);
+            margin-left: 10px; font-size: clamp(1rem, 4vw, 1.8rem); font-weight: 600; color: var(--accent-secondary);
         }
         .slide-info--text[data-description] {
             margin-left: 5px; font-size: clamp(0.8rem, 2.5vw, 0.95rem); font-family: var(--font-mono); font-weight: 400; color: var(--text-gray-400); margin-top: 12px; letter-spacing: 1px;
@@ -488,7 +488,7 @@
             .mobile-menu-btn { display: none; }
             
             .title-main { font-size: 3.5rem; }
-            .services-hero-title { font-size: 5rem; }
+            .services-hero-title { font-size: clamp(3rem, 8vw, 5rem); }
 
             .slider--btn__prev { left: 40px; }
             .slider--btn__next { right: 40px; }
@@ -520,7 +520,7 @@
             .section-padding { padding: 160px 0; }
             .section-header { margin-bottom: 80px; }
             .title-main { font-size: 4rem; }
-            .services-hero-title { font-size: 6.5rem; }
+            .services-hero-title { font-size: clamp(4rem, 8vw, 6.5rem); }
             
             .service-row { gap: 120px; }
 
@@ -660,7 +660,7 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <a href="index.html" class="nav-logo magnetic-elem">
-            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain; "></a>
+            <img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 130px; height: auto; object-fit: contain; "></a>
 
                 <div class="nav-links">
             <a href="index.html" class="magnetic-elem">Home</a>
@@ -712,6 +712,120 @@
                     Explore our suite of specialized cybersecurity services. Engineered to proactively neutralize threats, maintain continuous compliance, and secure your entire digital footprint.
                 </p>
             </div>
+        </div>
+    </section>
+
+
+
+      <section class="slider-section reveal-up">
+        <div class="container" style="position: absolute; top: 12%; z-index: 10;">
+            <div class="section-header" style="margin-bottom: 0;">
+                <h2 class="subtitle">Core Infrastructure</h2>
+            </div>
+        </div>
+
+        <div class="slider">
+            <button class="slider--btn slider--btn__prev magnetic-elem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+            </button>
+
+            <div class="slides__wrapper">
+                <div class="slides">
+                    <!-- slide 1 -->
+                    <div class="slide" data-current>
+                        <div class="slide__inner">
+                            <div class="slide--image__wrapper">
+                                <img class="slide--image" src="images/pexels-julio-lopez-75309646-34258666.webp" alt="Core Network Server Room" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide__bg" style="--bg: url(images/pexels-julio-lopez-75309646-34258666.webp); --dir: 0" data-current></div>
+
+                    <!-- slide 2 -->
+                    <div class="slide" data-next>
+                        <div class="slide__inner">
+                            <div class="slide--image__wrapper">
+                                <img class="slide--image" src="images/pexels-sora-shimazaki-5935794.webp" alt="Matrix Cyber Code" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide__bg" style="--bg: url(images/pexels-mati-6330644.webp); --dir: 1" data-next></div>
+
+                    <!-- slide 3 -->
+                    <div class="slide" data-previous>
+                        <div class="slide__inner">
+                            <div class="slide--image__wrapper">
+                                <img class="slide--image" src="images/pexels-mati-6330644.webp" alt="Cyber Security Lock" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide__bg" style="--bg: url(images/pexels-sora-shimazaki-5935794.webp); --dir: -1" data-previous></div>
+                </div>
+                <div class="slides--infos">
+                    <!-- Slide Info 1 -->
+                    <div class="slide-info" data-current>
+                        <div class="slide-info__inner">
+                            <div class="slide-info--text__wrapper">
+                                <div data-title class="slide-info--text">
+                                    <span>Core Network</span>
+                                </div>
+                                <div data-subtitle class="slide-info--text">
+                                    <span>Infrastructure</span>
+                                </div>
+                                <div data-description class="slide-info--text">
+                                    <span>Resilient zero-trust architecture</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide Info 2 -->
+                    <div class="slide-info" data-next>
+                        <div class="slide-info__inner">
+                            <div class="slide-info--text__wrapper">
+                                <div data-title class="slide-info--text">
+                                    <span>Threat Intel</span>
+                                </div>
+                                <div data-subtitle class="slide-info--text">
+                                    <span>Global Grid</span>
+                                </div>
+                                <div data-description class="slide-info--text">
+                                    <span>AI-driven anomaly detection</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide Info 3 -->
+                    <div class="slide-info" data-previous>
+                        <div class="slide-info__inner">
+                            <div class="slide-info--text__wrapper">
+                                <div data-title class="slide-info--text">
+                                    <span>SOC Defense</span>
+                                </div>
+                                <div data-subtitle class="slide-info--text">
+                                    <span>Active Monitoring</span>
+                                </div>
+                                <div data-description class="slide-info--text">
+                                    <span>24/7 proactive incident response</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="slider--btn slider--btn__next magnetic-elem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m9 18 6-6-6-6" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="slider-loader">
+            <span class="loader__text">0%</span>
         </div>
     </section>
 
@@ -850,117 +964,7 @@
     </section>
 
     <!-- Cyber Infrastructure Showcase Slider -->
-    <section class="slider-section reveal-up">
-        <div class="container" style="position: absolute; top: 12%; z-index: 10;">
-            <div class="section-header" style="margin-bottom: 0;">
-                <h2 class="subtitle">Core Infrastructure</h2>
-            </div>
-        </div>
-
-        <div class="slider">
-            <button class="slider--btn slider--btn__prev magnetic-elem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m15 18-6-6 6-6" />
-                </svg>
-            </button>
-
-            <div class="slides__wrapper">
-                <div class="slides">
-                    <!-- slide 1 -->
-                    <div class="slide" data-current>
-                        <div class="slide__inner">
-                            <div class="slide--image__wrapper">
-                                <img class="slide--image" src="images/pexels-julio-lopez-75309646-34258666.webp" alt="Core Network Server Room" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide__bg" style="--bg: url(images/pexels-julio-lopez-75309646-34258666.webp); --dir: 0" data-current></div>
-
-                    <!-- slide 2 -->
-                    <div class="slide" data-next>
-                        <div class="slide__inner">
-                            <div class="slide--image__wrapper">
-                                <img class="slide--image" src="images/pexels-sora-shimazaki-5935794.webp" alt="Matrix Cyber Code" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide__bg" style="--bg: url(images/pexels-mati-6330644.webp); --dir: 1" data-next></div>
-
-                    <!-- slide 3 -->
-                    <div class="slide" data-previous>
-                        <div class="slide__inner">
-                            <div class="slide--image__wrapper">
-                                <img class="slide--image" src="images/pexels-mati-6330644.webp" alt="Cyber Security Lock" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide__bg" style="--bg: url(images/pexels-sora-shimazaki-5935794.webp); --dir: -1" data-previous></div>
-                </div>
-                <div class="slides--infos">
-                    <!-- Slide Info 1 -->
-                    <div class="slide-info" data-current>
-                        <div class="slide-info__inner">
-                            <div class="slide-info--text__wrapper">
-                                <div data-title class="slide-info--text">
-                                    <span>Core Network</span>
-                                </div>
-                                <div data-subtitle class="slide-info--text">
-                                    <span>Infrastructure</span>
-                                </div>
-                                <div data-description class="slide-info--text">
-                                    <span>Resilient zero-trust architecture</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide Info 2 -->
-                    <div class="slide-info" data-next>
-                        <div class="slide-info__inner">
-                            <div class="slide-info--text__wrapper">
-                                <div data-title class="slide-info--text">
-                                    <span>Threat Intel</span>
-                                </div>
-                                <div data-subtitle class="slide-info--text">
-                                    <span>Global Grid</span>
-                                </div>
-                                <div data-description class="slide-info--text">
-                                    <span>AI-driven anomaly detection</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide Info 3 -->
-                    <div class="slide-info" data-previous>
-                        <div class="slide-info__inner">
-                            <div class="slide-info--text__wrapper">
-                                <div data-title class="slide-info--text">
-                                    <span>SOC Defense</span>
-                                </div>
-                                <div data-subtitle class="slide-info--text">
-                                    <span>Active Monitoring</span>
-                                </div>
-                                <div data-description class="slide-info--text">
-                                    <span>24/7 proactive incident response</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="slider--btn slider--btn__next magnetic-elem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m9 18 6-6-6-6" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="slider-loader">
-            <span class="loader__text">0%</span>
-        </div>
-    </section>
+  
 
     <!-- Call to Action -->
     <section class="cta-section reveal-up">
@@ -980,7 +984,7 @@
             <div class="footer-grid">
                 <!-- Col 1 -->
                 <div class="footer-col">
-                    <a href="index.html" class="nav-logo" style="margin-bottom: 32px; display: block;"><img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 160px; height: auto; object-fit: contain;"></a>
+                    <a href="index.html" class="nav-logo" style="margin-bottom: 32px; display: block;"><img src="whitelogo.webp" class="nav-logo-icon" alt="Logo" style="width: 130px; height: auto; object-fit: contain;"></a>
                     <p class="footer-col-desc">
                         Engineering unbreakable digital perimeters for forward-thinking enterprises. Secure your future with confidence.
                     </p>

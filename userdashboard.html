@@ -33,9 +33,9 @@
             transition: transform 0.3s ease-in-out;
         }
 
-        .glow-cyan { filter: drop-shadow(0 0 8px var(--accent-cyan)); }
-        .glow-green { filter: drop-shadow(0 0 8px var(--accent-green)); }
-        .glow-red { filter: drop-shadow(0 0 12px var(--accent-red)); }
+        .glow-white { filter: drop-shadow(0 0 8px #ffffff); }
+        .glow-white { filter: drop-shadow(0 0 8px #ffffff); }
+        .glow-white { filter: drop-shadow(0 0 12px #ffffff); }
 
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
@@ -159,7 +159,7 @@
         }
 
         .nav-item:hover { color: #ffffff; }
-        .nav-item:hover svg { transform: translateX(2px); color: var(--accent-cyan); }
+        .nav-item:hover svg { transform: translateX(2px); color: #ffffff; }
         .nav-item.active { color: #ffffff; }
         .nav-item.active::before {
             content: '';
@@ -168,10 +168,10 @@
             top: 25%;
             height: 50%;
             width: 2px;
-            background: var(--accent-cyan);
-            box-shadow: 0 0 10px var(--accent-cyan);
+            background: #ffffff;
+            box-shadow: 0 0 10px #ffffff;
         }
-        .nav-item.active svg { color: var(--accent-cyan); filter: drop-shadow(0 0 5px rgba(0, 242, 255, 0.5)); }
+        .nav-item.active svg { color: #ffffff; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5)); }
 
 /* PRELOADER STYLES */
 .preloader-overlay {
@@ -279,7 +279,7 @@
         <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 flex flex-col z-40 -translate-x-full lg:translate-x-0 lg:static">
         <div class="pt-10 pb-12 px-8">
             <a href="index.html" class="flex items-center justify-center w-full mt-4 mb-4">
-                <img src="whitelogo.webp" alt="Logo" style="width: 160px; height: auto; object-fit: contain;">
+                <img src="whitelogo.webp" alt="Logo" style="width: 130px; height: auto; object-fit: contain;">
             </a>
         </div>
 
@@ -305,7 +305,7 @@
                 Compliance
             </div>
             <div class="h-8"></div>
-            <div class="nav-item text-red-500 hover:bg-red-500/10 hover:text-red-400" onclick="window.location.href='index.html'">
+            <div class="nav-item text-gray-400 hover:bg-white/5 hover:text-gray-400" onclick="window.location.href='index.html'">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                 Logout
             </div>
@@ -315,9 +315,9 @@
             <div class="flex items-center justify-between mb-4">
                 <div class="flex flex-col">
                     <span class="text-[8px] text-gray-500 font-bold uppercase tracking-widest text-nowrap">Operator</span>
-                    <span id="user-email-display" class="text-[10px] text-cyan-400 font-medium font-orbitron uppercase" style="text-transform: lowercase;">UNKNOWN</span>
+                    <span id="user-email-display" class="text-[10px] text-white font-medium font-orbitron uppercase" style="text-transform: lowercase;">UNKNOWN</span>
                 </div>
-                <div class="w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_5px_#00f2ff]"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-white/10 shadow-[0_0_5px_#00f2ff]"></div>
             </div>
         </div>
     </aside>
@@ -332,14 +332,14 @@
                 <div>
                     <h1 class="text-xl md:text-3xl font-orbitron italic font-bold tracking-tighter uppercase">Cyber Defense Status</h1>
                     <div class="flex items-center space-x-4 mt-1 text-[10px] md:text-xs text-gray-500">
-                        <span class="flex items-center uppercase tracking-widest"><span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span> Live Monitoring</span>
+                        <span class="flex items-center uppercase tracking-widest"><span class="w-2 h-2 bg-white/5 rounded-full mr-2 animate-pulse"></span> Live Monitoring</span>
                     </div>
                 </div>
             </div>
 
             <div class="w-full md:w-auto grid grid-cols-3 md:flex md:items-center gap-4 md:space-x-12">
                 <div class="text-center md:text-right">
-                    <div class="text-xl md:text-2xl font-bold font-orbitron text-cyan-400 counter" data-target="73">0</div>
+                    <div class="text-xl md:text-2xl font-bold font-orbitron text-white counter" data-target="73">0</div>
                     <div class="text-[9px] md:text-[10px] text-gray-500 tracking-widest font-bold">TOTAL SCORE</div>
                 </div>
                 <div class="text-center md:text-right border-l border-white/10 md:pl-12">
@@ -347,7 +347,7 @@
                     <div class="text-[9px] md:text-[10px] text-gray-500 tracking-widest uppercase font-bold">Domains</div>
                 </div>
                 <div class="text-center md:text-right border-l border-white/10 md:pl-12">
-                    <div class="text-xl md:text-2xl font-bold font-orbitron text-red-500">27</div>
+                    <div class="text-xl md:text-2xl font-bold font-orbitron text-gray-400">27</div>
                     <div class="text-[9px] md:text-[10px] text-gray-500 tracking-widest uppercase font-bold">Alerts</div>
                 </div>
             </div>
@@ -370,7 +370,7 @@
                         <svg class="w-full h-full" viewBox="0 0 400 400">
                             <circle cx="200" cy="200" r="185" fill="none" stroke="#1c2128" stroke-width="1" stroke-dasharray="4 8" />
                             <circle cx="200" cy="200" r="160" fill="none" stroke="#161b22" stroke-width="20" />
-                            <circle id="mainGauge" class="gauge-ring" cx="200" cy="200" r="160" fill="none" stroke="var(--accent-green)" stroke-width="20" stroke-dasharray="1005" stroke-dashoffset="1005" filter="url(#glow)" />
+                            <circle id="mainGauge" class="gauge-ring" cx="200" cy="200" r="160" fill="none" stroke="#ffffff" stroke-width="20" stroke-dasharray="1005" stroke-dashoffset="1005" filter="url(#glow)" />
                             <defs>
                                 <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
                                     <feGaussianBlur stdDeviation="10" result="blur" />
@@ -393,31 +393,31 @@
                     </div>
 
                     <!-- Right Nodes -->
-                    <div id="nodesList" class="flex flex-col space-y-4 w-full lg:w-80 z-10 mt-10 lg:mt-0">
+                    <div id="nodesList" class="flex flex-col space-y-4 w-full max-w-sm lg:max-w-none lg:w-80 z-10 mt-10 lg:mt-0 mx-auto lg:mx-0">
                         <div class="node-item flex items-center space-x-4 bg-white/5 p-4 rounded-full border border-white/5 hover:bg-white/10 transition-all cursor-pointer group" data-color="green">
-                            <div class="w-10 h-10 rounded-full border-2 border-green-400 flex items-center justify-center text-green-400 font-bold text-xs glow-green">56</div>
-                            <div class="flex-1 text-xs font-semibold group-hover:text-cyan-400 transition-colors">Account Management</div>
-                            <div class="text-green-500 text-[10px] font-bold">5</div>
-                        </div>
-                        <div class="node-item flex items-center space-x-4 bg-white/5 p-4 rounded-full border border-white/5 hover:bg-white/10 transition-all cursor-pointer group" data-color="green">
-                            <div class="w-10 h-10 rounded-full border-2 border-green-400 flex items-center justify-center text-green-400 font-bold text-xs glow-green">67</div>
-                            <div class="flex-1 text-xs font-semibold group-hover:text-cyan-400 transition-colors">Malware Defenses</div>
-                            <div class="text-green-500 text-[10px] font-bold">6</div>
-                        </div>
-                        <div class="node-item flex items-center space-x-4 bg-white/5 p-4 rounded-full border border-red-500/50 hover:bg-white/10 transition-all cursor-pointer group" data-color="red">
-                            <div class="w-10 h-10 rounded-full border-2 border-red-500 flex items-center justify-center text-red-500 font-bold text-xs glow-red node-pulse">49</div>
-                            <div class="flex-1 text-xs font-semibold group-hover:text-cyan-400 transition-colors text-red-400">Secure Network</div>
-                            <div class="text-red-500 text-[10px] font-bold">15</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-gray-300 font-bold text-xs glow-white">56</div>
+                            <div class="flex-1 text-xs font-semibold group-hover:text-white transition-colors">Account Management</div>
+                            <div class="text-gray-300 text-[10px] font-bold">5</div>
                         </div>
                         <div class="node-item flex items-center space-x-4 bg-white/5 p-4 rounded-full border border-white/5 hover:bg-white/10 transition-all cursor-pointer group" data-color="green">
-                            <div class="w-10 h-10 rounded-full border-2 border-green-400 flex items-center justify-center text-green-400 font-bold text-xs glow-green">73</div>
-                            <div class="flex-1 text-xs font-semibold group-hover:text-cyan-400 transition-colors">Secure Configuration</div>
-                            <div class="text-green-500 text-[10px] font-bold">7</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-gray-300 font-bold text-xs glow-white">67</div>
+                            <div class="flex-1 text-xs font-semibold group-hover:text-white transition-colors">Malware Defenses</div>
+                            <div class="text-gray-300 text-[10px] font-bold">6</div>
                         </div>
-                        <div class="node-item flex items-center space-x-4 bg-white/5 p-4 rounded-full border border-red-500/50 hover:bg-white/10 transition-all cursor-pointer group" data-color="red">
-                            <div class="w-10 h-10 rounded-full border-2 border-red-500 flex items-center justify-center text-red-500 font-bold text-xs glow-red node-pulse">47</div>
-                            <div class="flex-1 text-xs font-semibold group-hover:text-cyan-400 transition-colors text-red-400">Secure Application</div>
-                            <div class="text-red-500 text-[10px] font-bold">12</div>
+                        <div class="node-item flex items-center space-x-4 bg-white/5 p-4 rounded-full border border-white/20 hover:bg-white/10 transition-all cursor-pointer group" data-color="red">
+                            <div class="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-gray-400 font-bold text-xs glow-white node-pulse">49</div>
+                            <div class="flex-1 text-xs font-semibold group-hover:text-white transition-colors text-gray-400">Secure Network</div>
+                            <div class="text-gray-400 text-[10px] font-bold">15</div>
+                        </div>
+                        <div class="node-item flex items-center space-x-4 bg-white/5 p-4 rounded-full border border-white/5 hover:bg-white/10 transition-all cursor-pointer group" data-color="green">
+                            <div class="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-gray-300 font-bold text-xs glow-white">73</div>
+                            <div class="flex-1 text-xs font-semibold group-hover:text-white transition-colors">Secure Configuration</div>
+                            <div class="text-gray-300 text-[10px] font-bold">7</div>
+                        </div>
+                        <div class="node-item flex items-center space-x-4 bg-white/5 p-4 rounded-full border border-white/20 hover:bg-white/10 transition-all cursor-pointer group" data-color="red">
+                            <div class="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-gray-400 font-bold text-xs glow-white node-pulse">47</div>
+                            <div class="flex-1 text-xs font-semibold group-hover:text-white transition-colors text-gray-400">Secure Application</div>
+                            <div class="text-gray-400 text-[10px] font-bold">12</div>
                         </div>
                     </div>
                 </div>
@@ -427,7 +427,7 @@
                         <div class="text-[9px] md:text-[10px] text-gray-500 font-bold tracking-widest uppercase mb-2">Total Coverage</div>
                         <div class="flex items-center space-x-4">
                              <div class="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
-                                <div id="coverageBar" class="h-full bg-cyan-400 transition-all duration-1000 ease-out" style="width: 0%"></div>
+                                <div id="coverageBar" class="h-full bg-white/10 transition-all duration-1000 ease-out" style="width: 0%"></div>
                              </div>
                              <span class="text-sm md:text-lg font-orbitron font-bold">76%</span>
                         </div>
@@ -452,26 +452,26 @@
             <div class="col-span-12 xl:col-span-4 flex flex-col space-y-6 md:space-y-8">
                 
                 <div class="bg-panel-bg/40 p-8 rounded-3xl border border-white/5 flex flex-col items-center justify-center text-center relative overflow-hidden h-[350px] md:h-[450px]">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-red-500 shadow-[0_0_15px_#ff4b5c]"></div>
-                    <div class="w-32 h-32 md:w-48 md:h-48 bg-red-500 rounded-full flex flex-col items-center justify-center alert-pulse mb-6">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-white/5 shadow-[0_0_15px_#ff4b5c]"></div>
+                    <div class="w-32 h-32 md:w-48 md:h-48 bg-white/5 rounded-full flex flex-col items-center justify-center alert-pulse mb-6">
                         <span class="text-4xl md:text-6xl font-orbitron font-bold">27</span>
                         <p class="text-[8px] md:text-[10px] font-bold tracking-widest mt-1 uppercase">Total Alerts</p>
                     </div>
                     <h3 class="text-lg md:text-xl font-orbitron font-bold mb-2 md:mb-4 uppercase tracking-tighter">Critical Attention</h3>
                     <p class="text-[10px] md:text-xs text-gray-400 px-4 md:px-8 leading-relaxed mb-6">Immediate action required on 3 network anomalies and unauthorized attempts.</p>
-                    <button onclick="window.location.href='404.html'" class="w-full md:w-auto px-8 py-3 bg-red-500/10 border border-red-500 text-red-500 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all shadow-md">View Details</button>
+                    <button onclick="window.location.href='404.html'" class="w-full md:w-auto px-8 py-3 bg-white/5 border border-white/20 text-gray-400 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-white/5 hover:text-white transition-all shadow-md">View Details</button>
                 </div>
 
                 <div class="bg-panel-bg/40 p-5 md:p-6 rounded-3xl border border-white/5">
                     <div class="flex items-center justify-between mb-4 md:mb-6">
                         <h4 class="text-[10px] md:text-xs font-bold font-orbitron tracking-widest uppercase">Live Threat Feed</h4>
-                        <span class="text-[8px] md:text-[9px] text-red-400 flex items-center animate-pulse">
-                            <span class="w-1 h-1 bg-red-400 rounded-full mr-2"></span> INTERCEPTING
+                        <span class="text-[8px] md:text-[9px] text-gray-400 flex items-center animate-pulse">
+                            <span class="w-1 h-1 bg-white/5 rounded-full mr-2"></span> INTERCEPTING
                         </span>
                     </div>
                     <div class="space-y-3">
                         <div class="flex items-center space-x-3 p-3 bg-white/5 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                            <div class="text-red-500 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/><path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/></svg></div>
+                            <div class="text-gray-400 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/><path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/></svg></div>
                             <div class="min-w-0">
                                 <p class="text-[10px] font-bold truncate">SQL Injection Attempt</p>
                                 <p class="text-[8px] text-gray-500 truncate">Source: 192.168.1.42 • 2m ago</p>
@@ -493,12 +493,12 @@
                 <div class="stat-card p-4 md:p-6 rounded-2xl flex flex-col items-center shadow-lg">
                     <span class="text-gray-500 text-[8px] md:text-[10px] uppercase font-bold tracking-widest mb-3">Traffic Load</span>
                     <div class="w-full h-10 flex items-end space-x-1">
-                        <div class="flex-1 bg-cyan-500/20 h-[40%] rounded-t-sm"></div>
-                        <div class="flex-1 bg-cyan-500/40 h-[60%] rounded-t-sm"></div>
-                        <div class="flex-1 bg-cyan-500/60 h-[50%] rounded-t-sm"></div>
-                        <div class="flex-1 bg-cyan-500/40 h-[80%] rounded-t-sm"></div>
-                        <div class="flex-1 bg-cyan-500/80 h-[90%] rounded-t-sm"></div>
-                        <div class="flex-1 bg-cyan-500 h-[70%] rounded-t-sm glow-cyan"></div>
+                        <div class="flex-1 bg-white/10 h-[40%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-white/10 h-[60%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-white/10 h-[50%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-white/10 h-[80%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-white/10 h-[90%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-white/10 h-[70%] rounded-t-sm glow-white"></div>
                     </div>
                 </div>
                 <div class="stat-card p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center shadow-lg">
@@ -507,12 +507,12 @@
                 </div>
                 <div class="stat-card p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center shadow-lg">
                     <span class="text-gray-500 text-[8px] md:text-[10px] uppercase font-bold tracking-widest mb-1">Anomalies</span>
-                    <div class="text-lg md:text-2xl font-orbitron font-bold text-red-400">04</div>
+                    <div class="text-lg md:text-2xl font-orbitron font-bold text-gray-400">04</div>
                 </div>
                                 <div class="stat-card p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center shadow-lg">
                     <span class="text-gray-500 text-[8px] md:text-[10px] uppercase font-bold tracking-widest mb-2">Sys Health</span>
                     <div class="flex items-center space-x-2">
-                        <div class="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]"></div>
+                        <div class="w-2 h-2 md:w-3 md:h-3 bg-white/5 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]"></div>
                         <span class="text-xs md:text-xl font-orbitron font-bold">OPTIMAL</span>
                     </div>
                 </div>
@@ -610,7 +610,10 @@
             const drawConnections = () => {
                 const svg = document.getElementById('connectionContainer');
                 const gaugeContainer = document.getElementById('gaugeContainer');
-                if (!svg || !gaugeContainer || window.innerWidth < 1280) return;
+                if (!svg || !gaugeContainer || window.innerWidth < 1280) {
+                    if (svg) svg.innerHTML = '';
+                    return;
+                }
 
                 const nodes = document.querySelectorAll('.node-item');
                 const containerRect = svg.getBoundingClientRect();
@@ -630,7 +633,7 @@
                     const startY = centerY + originYOffset;
 
                     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                    const color = node.getAttribute('data-color') === 'red' ? '#ff4b5c' : '#61fcc3';
+                    const color = node.getAttribute('data-color') === 'red' ? '#666666' : '#61fcc3';
                     const midX = startX + (endX - startX) * 0.45;
                     const d = `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`;
                     
