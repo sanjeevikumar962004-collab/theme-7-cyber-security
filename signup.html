@@ -279,15 +279,8 @@
                 return;
             }
             
-            // Validated, check role and navigate to dashboard
-            const role = document.getElementById('role').value;
-            if(role === 'admin') {
-                window.location.href = 'admin dasboard.html';
-            } else if(role === 'user') {
-                window.location.href = 'userdashboard.html';
-            } else {
-                window.location.href = '404.html';
-            }
+            // Validated, navigate to login page
+            window.location.href = 'login.html';
         });
 
         document.getElementById('confirm').addEventListener('input', function() {
